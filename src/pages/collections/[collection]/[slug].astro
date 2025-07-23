@@ -8,12 +8,12 @@ export async function getStaticPaths() {
   const paths = [];
   
   for (const collection of collections) {
-    const posts = await getCollection(`collections/${collection}`);
-    const filteredPosts = posts.filter(post => post.slug !== 'index');
+    const posts = await getCollection(`collections/${collection}` as any);
+    const filteredPosts = posts.filter((post: any) => post.id !== 'index');
     
     for (const post of filteredPosts) {
       paths.push({
-        params: { collection, slug: post.slug },
+        params: { collection, slug: post.id },
         props: { post, collection }
       });
     }
@@ -26,12 +26,12 @@ const { post, collection } = Astro.props;
 const { Content } = await post.render();
 
 // Get all posts in this collection for navigation
-const allPosts = await getCollection(`collections/${collection}`);
+const allPosts = await getCollection(`collections/${collection}` as any);
 const posts = allPosts
-  .filter(p => p.slug !== 'index')
-  .sort((a, b) => a.data.order - b.data.order);
+  .filter((p: any) => p.id !== 'index')
+  .sort((a: any, b: any) => a.data.order - b.data.order);
 
-const currentIndex = posts.findIndex(p => p.slug === post.slug);
+const currentIndex = posts.findIndex((p: any) => p.id === post.id);
 const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
 const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
@@ -149,9 +149,9 @@ const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
       <nav class="post-navigation">
         <div class="nav-links">
           {prevPost ? (
-            <a href={`/collections/${collection}/${prevPost.slug}`} class="nav-link prev">
+            <a href={`/collections/${collection}/${(prevPost as any).id}`} class="nav-link prev">
               <span class="nav-direction">← Previous</span>
-              <span class="nav-title">{prevPost.data.title}</span>
+              <span class="nav-title">{(prevPost as any).data.title}</span>
             </a>
           ) : (
             <div class="nav-placeholder"></div>
@@ -163,9 +163,9 @@ const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
           </a>
           
           {nextPost ? (
-            <a href={`/collections/${collection}/${nextPost.slug}`} class="nav-link next">
+            <a href={`/collections/${collection}/${(nextPost as any).id}`} class="nav-link next">
               <span class="nav-direction">Next →</span>
-              <span class="nav-title">{nextPost.data.title}</span>
+              <span class="nav-title">{(nextPost as any).data.title}</span>
             </a>
           ) : (
             <div class="nav-placeholder"></div>
