@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* Import our custom CSS files */
+@import "./variables.css";
+@import "./base.css";
+@import "./navigation.css";
+@import "./components.css";

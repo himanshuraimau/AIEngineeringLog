@@ -1,0 +1,170 @@
+/* Base Styles */
+
+html {
+  font-family: var(--font-family-serif);
+  background: var(--bg-color);
+  background-image: 
+    linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px), 
+    linear-gradient(var(--grid-line-color) 1px, transparent 1px);
+  background-size: 20px 20px;
+  min-height: 100vh;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+body {
+  margin: 0;
+  padding: var(--container-padding);
+  color: var(--text-color);
+  line-height: var(--line-height-base);
+  font-size: var(--font-size-base);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+  font-family: var(--font-family-serif-display);
+  font-weight: 400;
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+p {
+  margin: 0;
+  color: var(--text-color);
+}
+
+a {
+  color: var(--accent-color);
+  transition: color var(--transition-normal);
+}
+
+a:hover {
+  color: var(--accent-hover-color);
+}
+
+/* Layout */
+.page-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Common Components */
+.section-title {
+  font-family: var(--font-family-serif-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--heading-color);
+  margin: 0 0 5px 0;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted-text-color);
+  margin: 0 0 var(--section-spacing) 0;
+}
+
+/* Card Styles */
+.card {
+  background: var(--card-bg-color);
+  border: 1px solid var(--border-color);
+  padding: var(--card-padding);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-color);
+}
+
+/* Badges and Tags */
+.badge {
+  background: var(--badge-bg-color);
+  color: var(--accent-color);
+  padding: 3px 8px;
+  border-radius: var(--border-radius);
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+}
+
+.tag {
+  background: var(--tag-bg-color);
+  color: var(--accent-color);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  border: 1px solid var(--grid-line-color);
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  transition: all var(--transition-normal);
+  display: inline-block;
+  border: 2px solid var(--accent-color);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover-color);
+  border-color: var(--accent-hover-color);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-color);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .card::before {
+    left: -10px;
+  }
+} 

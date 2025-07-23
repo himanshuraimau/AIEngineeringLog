@@ -1,11 +1,28 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navigation from '../components/home/Navigation.tsx';
+import HeroSection from '../components/home/HeroSection.tsx';
+import LatestPosts from '../components/home/LatestPosts.tsx';
+import FeaturedCollections from '../components/home/FeaturedCollections.tsx';
 ---
 
-<Layout>
-	<Welcome />
+<Layout 
+  title="AIEngineeringLog - Learn from Practitioners"
+  description="A community-driven course on AI Engineering where each post is a chapter written by practitioners who actually built the projects - not just watched tutorials."
+>
+  <div class="page-container">
+    <Navigation client:load />
+    <main class="main-content">
+      <HeroSection client:load />
+      <LatestPosts client:load />
+      <FeaturedCollections client:load />
+    </main>
+    
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2025 AIEngineeringLog. Built with ❤️ by practitioners, for practitioners.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
 </Layout>
