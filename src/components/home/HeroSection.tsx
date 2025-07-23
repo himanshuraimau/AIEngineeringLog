@@ -20,8 +20,7 @@ export default function HeroSection() {
 
         <div className="hero-visual">
           <div className="hero-placeholder">
-            <h3>🚀 Ready to Build?</h3>
-            <p>Join our community of AI practitioners sharing real-world experience</p>
+           <img src="src/assets/hero-image.png" alt="Hero Image" />
           </div>
         </div>
       </div>

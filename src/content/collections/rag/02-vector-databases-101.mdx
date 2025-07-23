@@ -1,0 +1,120 @@
+---
+title: "Vector Databases 101: The Foundation of RAG"
+description: "Understanding how vector databases enable semantic search and make RAG systems possible"
+collection: "rag"
+order: 2
+author: "jane-smith"
+publishDate: 2024-01-18
+readTime: "10 min"
+tags: ["vector-databases", "embeddings", "pinecone", "similarity-search"]
+prerequisites: ["01-what-is-rag"]
+authorProfile:
+  github: "https://github.com/jane-smith"
+  linkedin: "https://linkedin.com/in/jane-smith"
+  twitter: "https://twitter.com/jane_builds_ai"
+  website: "https://janesmith.dev"
+---
+
+# Vector Databases 101: The Foundation of RAG
+
+Vector databases are the secret sauce that makes RAG systems work. They enable us to find semantically similar content, not just exact keyword matches. Let's dive into how they work and why they're essential.
+
+## What Are Vector Databases?
+
+A vector database stores data as high-dimensional vectors (embeddings) that represent the semantic meaning of text, images, or other data types. Unlike traditional databases that match exact values, vector databases find similar meanings.
+
+## Why Traditional Search Falls Short
+
+Consider these two questions:
+- "How do I reset my password?"  
+- "I forgot my login credentials"
+
+Traditional keyword search would miss the connection, but vector search understands they're asking about the same thing.
+
+## How Embeddings Work
+
+Embeddings convert text into numerical vectors that capture semantic meaning:
+
+```python
+# Example with OpenAI embeddings
+import openai
+
+text = "How do I reset my password?"
+embedding = openai.embeddings.create(
+    model="text-embedding-ada-002",
+    input=text
+).data[0].embedding
+
+# embedding is now a 1536-dimensional vector
+print(len(embedding))  # 1536
+```
+
+## Setting Up Your First Vector Database
+
+Let's use Pinecone for this example:
+
+```python
+import pinecone
+from openai import OpenAI
+
+# Initialize Pinecone
+pinecone.init(api_key="your-api-key")
+index = pinecone.Index("rag-demo")
+
+# Store a document
+client = OpenAI()
+doc = "To reset your password, go to Settings > Account > Reset Password"
+embedding = client.embeddings.create(
+    model="text-embedding-ada-002",
+    input=doc
+).data[0].embedding
+
+index.upsert([
+    ("doc-1", embedding, {"text": doc, "category": "help"})
+])
+```
+
+## Searching for Similar Content
+
+```python
+# Search for similar documents
+query = "I forgot my password"
+query_embedding = client.embeddings.create(
+    model="text-embedding-ada-002", 
+    input=query
+).data[0].embedding
+
+results = index.query(
+    vector=query_embedding,
+    top_k=5,
+    include_metadata=True
+)
+
+for match in results.matches:
+    print(f"Score: {match.score}")
+    print(f"Text: {match.metadata['text']}")
+```
+
+## Popular Vector Database Options
+
+| Database | Pros | Cons | Best For |
+|----------|------|------|----------|
+| **Pinecone** | Managed, fast, easy to use | Cost, vendor lock-in | Production apps |
+| **Weaviate** | Open source, GraphQL API | Complex setup | Advanced use cases |
+| **Chroma** | Simple, local development | Limited scale | Prototyping |
+| **Qdrant** | Fast, Rust-based | Newer ecosystem | Performance-critical |
+
+## Key Concepts to Remember
+
+- **Similarity Score**: How closely two vectors match (0-1 scale)
+- **Dimensionality**: Higher dimensions = more nuanced understanding
+- **Index Types**: HNSW, IVF, etc. - different algorithms for different needs
+- **Metadata Filtering**: Combine vector search with traditional filters
+
+## What's Next?
+
+Now that you understand vector databases, we'll build our first RAG query system in the next post, combining everything we've learned so far.
+
+---
+
+*Questions about vector databases? Drop them in the comments below!* 

@@ -1,6 +1,17 @@
 import ThemeToggle from '../ThemeToggle';
+import ActiveNavigation from '../ActiveNavigation';
 
-export default function Navigation() {
+interface NavigationProps {
+  currentPath?: string;
+}
+
+export default function Navigation({ currentPath = '/' }: NavigationProps) {
+  const isActive = (path: string) => {
+    if (path === '/' && currentPath === '/') return true;
+    if (path !== '/' && currentPath?.startsWith(path)) return true;
+    return false;
+  };
+
   return (
     <nav className="nav-container">
       <div className="nav-content">
@@ -15,11 +26,15 @@ export default function Navigation() {
 
         {/* Navigation Links */}
         <div className="nav-links">
-          <a href="/collections" className="nav-link">Collections</a>
-          <a href="/authors" className="nav-link">Authors</a>
-          <a href="/about" className="nav-link">About</a>
-          <a href="/contribute" className="nav-link">Contribute</a>
+          <a href="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</a>
+          <a href="/collections" className={`nav-link ${isActive('/collections') ? 'active' : ''}`}>Collections</a>
+          <a href="/authors" className={`nav-link ${isActive('/authors') ? 'active' : ''}`}>Authors</a>
+          <a href="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`}>About</a>
+          <a href="/contribute" className={`nav-link ${isActive('/contribute') ? 'active' : ''}`}>Contribute</a>
         </div>
+        
+        {/* Client-side active navigation handler */}
+        <ActiveNavigation />
       </div>
     </nav>
   );

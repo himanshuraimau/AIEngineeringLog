@@ -1,0 +1,183 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Navigation from '../../../components/home/Navigation.tsx';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const collections = ['rag', 'prompt-engineering', 'agents'];
+  const paths = [];
+  
+  for (const collection of collections) {
+    const posts = await getCollection(`collections/${collection}`);
+    const filteredPosts = posts.filter(post => post.slug !== 'index');
+    
+    for (const post of filteredPosts) {
+      paths.push({
+        params: { collection, slug: post.slug },
+        props: { post, collection }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { post, collection } = Astro.props;
+const { Content } = await post.render();
+
+// Get all posts in this collection for navigation
+const allPosts = await getCollection(`collections/${collection}`);
+const posts = allPosts
+  .filter(p => p.slug !== 'index')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const currentIndex = posts.findIndex(p => p.slug === post.slug);
+const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+
+// Collection metadata
+const collectionMeta = {
+  rag: { title: "RAG Systems", color: "#8b4513" },
+  'prompt-engineering': { title: "Prompt Engineering", color: "#2d5016" },
+  agents: { title: "AI Agents", color: "#1a365d" }
+}[collection] || {};
+
+const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
+---
+
+<Layout title={pageTitle} description={post.data.description}>
+  <div class="page-container">
+    <Navigation client:load currentPath="/collections" />
+    
+    <main class="main-content">
+      <header class="post-header-section">
+        <div class="post-breadcrumb">
+          <a href="/collections">Collections</a> → 
+          <a href={`/collections/${collection}`}>{collectionMeta.title}</a> → 
+          {post.data.title}
+        </div>
+        
+        <div class="post-meta-header">
+          <div class="post-number-badge">
+            {String(post.data.order).padStart(2, '0')}
+          </div>
+          <div class="post-info">
+            <h1 class="post-main-title">{post.data.title}</h1>
+            <div class="post-meta-details">
+              <span class="read-time">{post.data.readTime}</span>
+              <span class="publish-date">
+                {post.data.publishDate.toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </span>
+              {post.data.lastUpdated && (
+                <span class="update-date">
+                  Updated: {post.data.lastUpdated.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        <p class="post-description-header">{post.data.description}</p>
+        
+        <div class="post-tags-header">
+          {post.data.tags.map(tag => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+        
+
+      </header>
+
+      {post.data.prerequisites && post.data.prerequisites.length > 0 && (
+        <section class="prerequisites-section">
+          <h3>Prerequisites</h3>
+          <div class="prerequisites-list">
+            {post.data.prerequisites.map(prereq => {
+              const prereqPost = posts.find(p => p.slug === prereq);
+              return prereqPost ? (
+                <a href={`/collections/${collection}/${prereq}`} class="prerequisite-item">
+                  <span class="prereq-number">{String(prereqPost.data.order).padStart(2, '0')}</span>
+                  <span class="prereq-title">{prereqPost.data.title}</span>
+                </a>
+              ) : (
+                <div class="prerequisite-item">
+                  <span class="prereq-title">{prereq}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      <article class="post-content-section">
+        <Content />
+      </article>
+
+      {post.data.authorProfile && (
+        <section class="author-section">
+          <h3>About the Author</h3>
+          <div class="author-card">
+            <div class="author-info">
+              <h4>{post.data.author}</h4>
+              <div class="author-links">
+                {post.data.authorProfile.github && (
+                  <a href={post.data.authorProfile.github} target="_blank" rel="noopener">GitHub</a>
+                )}
+                {post.data.authorProfile.linkedin && (
+                  <a href={post.data.authorProfile.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+                )}
+                {post.data.authorProfile.twitter && (
+                  <a href={post.data.authorProfile.twitter} target="_blank" rel="noopener">Twitter</a>
+                )}
+                {post.data.authorProfile.website && (
+                  <a href={post.data.authorProfile.website} target="_blank" rel="noopener">Website</a>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <nav class="post-navigation">
+        <div class="nav-links">
+          {prevPost ? (
+            <a href={`/collections/${collection}/${prevPost.slug}`} class="nav-link prev">
+              <span class="nav-direction">← Previous</span>
+              <span class="nav-title">{prevPost.data.title}</span>
+            </a>
+          ) : (
+            <div class="nav-placeholder"></div>
+          )}
+          
+          <a href={`/collections/${collection}`} class="nav-link collection">
+            <span class="nav-direction">↑ Collection</span>
+            <span class="nav-title">{collectionMeta.title}</span>
+          </a>
+          
+          {nextPost ? (
+            <a href={`/collections/${collection}/${nextPost.slug}`} class="nav-link next">
+              <span class="nav-direction">Next →</span>
+              <span class="nav-title">{nextPost.data.title}</span>
+            </a>
+          ) : (
+            <div class="nav-placeholder"></div>
+          )}
+        </div>
+      </nav>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2025 AIEngineeringLog. Built with ❤️ by practitioners, for practitioners.</p>
+      </div>
+    </footer>
+  </div>
+</Layout> 

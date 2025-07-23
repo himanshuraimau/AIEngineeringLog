@@ -1,0 +1,172 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Navigation from '../../../components/home/Navigation.tsx';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  return [
+    { params: { collection: 'rag' } },
+    { params: { collection: 'prompt-engineering' } },
+    { params: { collection: 'agents' } },
+  ];
+}
+
+const { collection } = Astro.params;
+
+// Get all posts for this collection
+const allPosts = await getCollection(`collections/${collection}` as any);
+const posts = allPosts
+  .filter((post: any) => post.id !== 'index')
+  .sort((a: any, b: any) => a.data.order - b.data.order);
+
+// Get collection metadata
+const collectionIndex = allPosts.find((post: any) => post.id === 'index');
+
+// Render collection index content if it exists
+let CollectionIndexContent: any = null;
+if (collectionIndex) {
+  const { Content } = await render(collectionIndex as any);
+  CollectionIndexContent = Content;
+}
+
+// Collection metadata
+const collectionMeta = {
+  rag: {
+    title: "RAG Systems",
+    description: "Learn to build Retrieval-Augmented Generation systems from scratch to production",
+    category: "Building",
+    color: "#8b4513"
+  },
+  'prompt-engineering': {
+    title: "Prompt Engineering", 
+    description: "Master the art and science of crafting effective prompts for LLMs",
+    category: "Foundations",
+    color: "#2d5016"
+  },
+  agents: {
+    title: "AI Agents",
+    description: "Build autonomous AI agents that can reason, plan, and take actions",
+    category: "Advanced", 
+    color: "#1a365d"
+  }
+}[collection] || {};
+
+const pageTitle = `${collectionMeta.title} - AIEngineeringLog`;
+const pageDescription = collectionMeta.description || "";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="page-container">
+    <Navigation client:load currentPath="/collections" />
+    
+    <main class="main-content">
+      <header class="collection-landing-header">
+        <div class="collection-breadcrumb">
+          <a href="/collections">Collections</a> → {collectionMeta.title}
+        </div>
+        
+        <div class="collection-landing-meta">
+          <span class="collection-category" style={`color: ${collectionMeta.color}`}>
+            {collectionMeta.category}
+          </span>
+          <span class="collection-post-count">{posts.length} posts</span>
+        </div>
+        
+        <h1 class="collection-landing-title">{collectionMeta.title}</h1>
+        <p class="collection-landing-description">{collectionMeta.description}</p>
+      </header>
+
+      {CollectionIndexContent && (
+        <section class="collection-overview">
+          <div class="collection-overview-content">
+            <CollectionIndexContent />
+          </div>
+        </section>
+      )}
+
+      <section class="collection-posts">
+        <h2 class="section-title">Learning Path</h2>
+        <div class="posts-list">
+          {posts.map((post: any, index: number) => (
+            <article class="post-item">
+              <div class="post-number">
+                <span>{String(post.data.order).padStart(2, '0')}</span>
+              </div>
+              
+              <div class="post-content">
+                <div class="post-header">
+                  <h3 class="post-title">
+                    <a href={`/collections/${collection}/${post.id}`}>
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  <div class="post-meta">
+                    <span class="read-time">{post.data.readTime}</span>
+                    <span class="publish-date">
+                      {post.data.publishDate.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                      })}
+                    </span>
+                  </div>
+                </div>
+                
+                <p class="post-description">{post.data.description}</p>
+                
+                <div class="post-tags">
+                  {post.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+                
+                {post.data.prerequisites && post.data.prerequisites.length > 0 && (
+                  <div class="post-prerequisites">
+                    <span class="prereq-label">Prerequisites:</span>
+                    {post.data.prerequisites.map((prereq: string) => {
+                      const prereqPost = posts.find((p: any) => p.id === prereq);
+                      return prereqPost ? (
+                        <a href={`/collections/${collection}/${prereq}`} class="prereq-link">
+                          {(prereqPost as any).data.title}
+                        </a>
+                      ) : (
+                        <span class="prereq-text">{prereq}</span>
+                      );
+                    })}
+                  </div>
+                )}
+                
+                
+              </div>
+              
+              <div class="post-progress">
+                <div class="progress-indicator">
+                  {index === 0 ? '🚀' : index < 3 ? '📚' : index < 6 ? '🛠️' : '🚀'}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="collection-navigation">
+        <div class="nav-actions">
+          <a href="/collections" class="nav-button secondary">
+            ← All Collections
+          </a>
+          {posts.length > 0 && (
+            <a href={`/collections/${collection}/${(posts[0] as any).id}`} class="nav-button primary">
+              Start Learning →
+            </a>
+          )}
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2025 AIEngineeringLog. Built with ❤️ by practitioners, for practitioners.</p>
+      </div>
+    </footer>
+  </div>
+</Layout> 

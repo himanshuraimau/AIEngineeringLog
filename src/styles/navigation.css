@@ -61,6 +61,12 @@
   color: var(--accent-hover-color);
 }
 
+.nav-link.active {
+  border-bottom-color: var(--accent-color);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
 /* Theme Toggle */
 .theme-toggle {
   background: var(--card-bg-color);
