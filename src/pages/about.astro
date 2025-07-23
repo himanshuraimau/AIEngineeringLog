@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/home/Navigation.tsx';
+
+const pageTitle = "About - AIEngineeringLog";
+const pageDescription = "Learn about Club AI Brewery and how AIEngineeringLog evolved from internal teaching materials to an open-source community resource";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="page-container">
+    <Navigation client:load currentPath="/about" />
+    
+    <main class="main-content">
+      <div class="about-header">
+        <h1 class="section-title">About AIEngineeringLog</h1>
+        <p class="section-subtitle">From Club AI Brewery to Open Source</p>
+      </div>
+
+      <div class="about-content">
+        <div class="about-section">
+          <h2>🍺 Club AI Brewery</h2>
+          <p>AIEngineeringLog started as internal teaching materials for <strong>Club AI Brewery</strong> - a community where AI engineers shared real-world experiences over craft beer.</p>
+          
+          <p>We got tired of theoretical tutorials and wanted practical knowledge from people who actually built production AI systems.</p>
+        </div>
+
+        <div class="about-section">
+          <h2>🌍 Going Open Source</h2>
+          <p>What began as club materials is now open source. Anyone can contribute their AI engineering experiences and help others learn from real production systems.</p>
+        </div>
+
+        <div class="about-section">
+          <h2>📚 What We Cover</h2>
+          <ul>
+            <li><strong>RAG Systems</strong> - Building retrieval systems at scale</li>
+            <li><strong>AI Agents</strong> - Creating autonomous AI systems</li>
+            <li><strong>LLMOps</strong> - Operating models in production</li>
+            <li><strong>Fine-Tuning</strong> - Customizing models for specific tasks</li>
+            <li><strong>Production AI</strong> - Building reliable AI systems</li>
+            <li><strong>Prompt Engineering</strong> - Crafting effective prompts</li>
+          </ul>
+        </div>
+
+        <div class="about-section">
+          <h2>🤝 Join Us</h2>
+          <p>Built by practitioners, for practitioners. Every author has shipped production AI systems.</p>
+          
+          <div class="about-actions">
+            <a href="/contribute" class="btn btn-primary">Contribute</a>
+            <a href="/collections" class="btn btn-secondary">Explore</a>
+            <a href="/authors" class="btn btn-secondary">Authors</a>
+          </div>
+          
+          <p><em>Coming soon: Contribution guidelines and community docs.</em></p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2025 AIEngineeringLog. Originally by Club AI Brewery, now open source.</p>
+      </div>
+    </footer>
+  </div>
+</Layout> 

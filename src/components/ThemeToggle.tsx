@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme on mount
+  // Initialize theme on mount - sync with what's already set
   useEffect(() => {
     setMounted(true);
     
-    // Check for saved theme preference or default to light
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    
-    setTheme(initialTheme);
-    document.documentElement.setAttribute('data-theme', initialTheme);
+    // Get the theme that was already set by the inline script
+    const currentTheme = document.documentElement.getAttribute('data-theme') as 'light' | 'dark' || 'light';
+    setTheme(currentTheme);
   }, []);
 
   // Listen for system theme changes
@@ -23,7 +19,15 @@ export default function ThemeToggle() {
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem('theme')) {
+      // Only update if user hasn't manually set a preference
+      try {
+        if (!localStorage.getItem('theme')) {
+          const newTheme = e.matches ? 'dark' : 'light';
+          setTheme(newTheme);
+          document.documentElement.setAttribute('data-theme', newTheme);
+        }
+      } catch (error) {
+        // If localStorage is not available, just follow system preference
         const newTheme = e.matches ? 'dark' : 'light';
         setTheme(newTheme);
         document.documentElement.setAttribute('data-theme', newTheme);
@@ -38,7 +42,14 @@ export default function ThemeToggle() {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    
+    // Save to localStorage with error handling
+    try {
+      localStorage.setItem('theme', newTheme);
+    } catch (e) {
+      // Handle cases where localStorage is not available
+      console.warn('Unable to save theme preference:', e);
+    }
   };
 
   // Don't render until mounted to avoid hydration mismatch

@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 const { collection } = Astro.params;
 
 // Get all posts for this collection
-const allPosts = await getCollection(`collections/${collection}` as any);
+const allPosts = await getCollection(collection as any);
 const posts = allPosts
   .filter((post: any) => post.id !== 'index')
   .sort((a: any, b: any) => a.data.order - b.data.order);

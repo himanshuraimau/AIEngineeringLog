@@ -8,7 +8,9 @@ html {
     linear-gradient(var(--grid-line-color) 1px, transparent 1px);
   background-size: 20px 20px;
   min-height: 100vh;
-  transition: background-color var(--transition-normal), color var(--transition-normal);
+  transition: background-color var(--transition-normal), background-image var(--transition-normal);
+  /* Prevent flash of unstyled content */
+  color-scheme: light dark;
 }
 
 body {
@@ -17,6 +19,7 @@ body {
   color: var(--text-color);
   line-height: var(--line-height-base);
   font-size: var(--font-size-base);
+  transition: color var(--transition-normal);
 }
 
 /* Typography */
@@ -25,6 +28,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-serif-display);
   font-weight: 400;
   margin: 0;
+  transition: color var(--transition-normal);
 }
 
 h1 {
@@ -89,7 +93,8 @@ a:hover {
   padding: var(--card-padding);
   box-shadow: var(--card-shadow);
   position: relative;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), 
+              background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .card:hover {
@@ -105,6 +110,7 @@ a:hover {
   bottom: 0;
   width: 2px;
   background: var(--border-color);
+  transition: background-color var(--transition-normal);
 }
 
 /* Badges and Tags */
@@ -116,6 +122,7 @@ a:hover {
   font-size: 11px;
   font-weight: 600;
   border: 1px solid var(--border-color);
+  transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .tag {
@@ -126,6 +133,7 @@ a:hover {
   font-size: 10px;
   font-weight: 500;
   border: 1px solid var(--grid-line-color);
+  transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal);
 }
 
 /* Buttons */

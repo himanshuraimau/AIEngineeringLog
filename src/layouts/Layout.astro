@@ -23,6 +23,25 @@ const { title = "AIEngineeringLog", description = "A community-driven course on 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+        
+        <!-- Theme initialization script - runs immediately to prevent FOUC -->
+        <script is:inline>
+          (function() {
+            try {
+              // Get theme preference
+              const savedTheme = localStorage.getItem('theme');
+              const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+              
+              // Set theme immediately
+              document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+              // Fallback if localStorage is not available
+              const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+            }
+          })();
+        </script>
     </head>
     <body>
         <slot />

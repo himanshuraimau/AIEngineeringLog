@@ -26,37 +26,12 @@ const posts = defineCollection({
   }),
 });
 
-const authors = defineCollection({
-  type: 'content',
-  schema: z.object({
-    name: z.string(),
-    slug: z.string(),
-    bio: z.string(),
-    avatar: z.string().optional(),
-    company: z.string().optional(),
-    role: z.string().optional(),
-    location: z.string().optional(),
-    joinDate: z.date(),
-    social: z.object({
-      github: z.string().optional(),
-      linkedin: z.string().optional(),
-      twitter: z.string().optional(),
-      website: z.string().optional(),
-      email: z.string().optional(),
-      youtube: z.string().optional(),
-      medium: z.string().optional(),
-      discord: z.string().optional(),
-    }).optional(),
-    expertise: z.array(z.string()).optional(),
-  }),
-});
-
+// Define collections properly (not using the deprecated nested structure)
 export const collections = {
-  'collections/rag': posts,
-  'collections/prompt-engineering': posts,
-  'collections/agents': posts,
-  'collections/llmops': posts,
-  'collections/fine-tuning': posts,
-  'collections/production': posts,
-  'authors': authors,
+  'rag': posts,
+  'prompt-engineering': posts,
+  'agents': posts,
+  'llmops': posts,
+  'fine-tuning': posts,
+  'production': posts,
 }; 
