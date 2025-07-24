@@ -224,10 +224,9 @@
 
 /* Featured Collections Section */
 .featured-collections-section {
-  margin: var(--section-spacing) auto;
-  padding-left: var(--margin-left);
-  padding-right: 20px;
-  max-width: 1200px;
+  margin: var(--section-spacing) 0;
+  margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
 }
 
 .featured-collections-section .section-title {
@@ -247,6 +246,16 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   margin-bottom: 30px;
+}
+
+/* Ensure featured collections grid aligns properly */
+.featured-collections-section .collections-grid {
+  margin-left: 0;
+}
+
+/* Override collection card positioning for featured section */
+.featured-collections-section .collection-card::before {
+  left: -20px;
 }
 
 .collection-card {
@@ -296,10 +305,6 @@
   width: 24px;
   height: 24px;
   transition: color var(--transition-normal);
-}
-
-.collection-info {
-  flex: 1;
 }
 
 .collection-name {
@@ -390,6 +395,7 @@
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid var(--grid-line-color);
+  margin-left: 0;
 }
 
 .view-all-link {
@@ -430,12 +436,11 @@
 
 /* Collections Page Styles */
 .collections-header {
-  margin: var(--section-spacing) auto;
-  padding-left: var(--margin-left);
-  padding-right: 20px;
-  max-width: 1200px;
+  margin: var(--section-spacing) 0;
+  margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   border-bottom: 2px solid var(--border-color);
-  padding-bottom: var(--card-padding);
+  padding-bottom: 20px;
 }
 
 .collections-title {
@@ -497,12 +502,10 @@
 }
 
 .collections-info {
-  margin: calc(var(--section-spacing) * 2) auto var(--section-spacing) auto;
-  padding-left: var(--margin-left);
-  padding-right: 20px;
-  max-width: 1200px;
-  padding-top: var(--card-padding);
-  padding-bottom: var(--card-padding);
+  margin: var(--section-spacing) 0;
+  margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
+  padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
   box-shadow: var(--card-shadow);
@@ -546,10 +549,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  margin: var(--section-spacing) auto;
-  padding-left: var(--margin-left);
-  padding-right: 20px;
-  max-width: 1200px;
+  margin: var(--section-spacing) 0;
+  margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
 }
 
 .collections-grid .collection-card {
@@ -663,8 +665,9 @@
 .collection-landing-header {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   border-bottom: 2px solid var(--border-color);
-  padding-bottom: var(--card-padding);
+  padding-bottom: 20px;
 }
 
 .collection-breadcrumb {
@@ -710,6 +713,7 @@
 .collection-overview {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
@@ -730,12 +734,13 @@
 .collection-posts {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
 }
 
 .section-title {
   font-size: 24px;
   color: var(--heading-color);
-  margin-bottom: var(--card-padding);
+  margin-bottom: 20px;
 }
 
 .posts-list {
@@ -858,8 +863,6 @@
   margin-right: 10px;
 }
 
-
-
 .post-progress {
   display: flex;
   align-items: center;
@@ -871,8 +874,9 @@
 }
 
 .collection-navigation {
-  margin: calc(var(--section-spacing) * 2) 0 var(--section-spacing) 0;
+  margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
@@ -924,8 +928,9 @@
 .post-header-section {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   border-bottom: 2px solid var(--border-color);
-  padding-bottom: var(--card-padding);
+  padding-bottom: 20px;
 }
 
 .post-breadcrumb {
@@ -1003,6 +1008,7 @@
 .prerequisites-section {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
@@ -1070,6 +1076,7 @@
 .post-content-section {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
@@ -1173,6 +1180,7 @@
 .author-section {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
@@ -1224,8 +1232,9 @@
 }
 
 .post-navigation {
-  margin: calc(var(--section-spacing) * 2) 0 var(--section-spacing) 0;
+  margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
+  max-width: var(--container-max-width);
   padding: var(--card-padding);
   background: var(--card-bg-color);
   border: 1px solid var(--border-color);
@@ -1725,8 +1734,7 @@
   }
 
   .featured-collections-section {
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-left: var(--margin-left);
     max-width: none;
   }
 

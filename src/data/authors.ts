@@ -3,8 +3,9 @@ export interface Author {
   name: string;
   bio: string;
   avatar?: string;
-  company?: string;
-  role?: string;
+  school?: string;
+  major?: string;
+  year?: string;
   location?: string;
   joinDate: string;
   social?: {
@@ -17,57 +18,76 @@ export interface Author {
     medium?: string;
     discord?: string;
   };
-  expertise?: string[];
+  interests?: string[];
 }
 
 export const authors: Record<string, Author> = {
   'jane-smith': {
     id: 'jane-smith',
     name: 'Jane Smith',
-    bio: 'AI Engineer building production RAG systems at scale. Previously at OpenAI and Google.',
+    bio: 'CS junior who got way too into RAG systems after a failed attempt to build a study buddy chatbot. Now I actually know what embeddings are!',
     avatar: '/avatars/jane-smith.jpg',
-    company: 'TechCorp',
-    role: 'Senior AI Engineer',
-    location: 'San Francisco, CA',
+    school: 'UC Berkeley',
+    major: 'Computer Science',
+    year: 'Junior',
+    location: 'Berkeley, CA',
     joinDate: '2024-01-10',
     social: {
-      github: 'https://github.com/jane-smith',
-      linkedin: 'https://linkedin.com/in/jane-smith',
-      twitter: 'https://twitter.com/jane_builds_ai',
-      website: 'https://janesmith.dev',
-      email: 'jane@example.com',
+      github: 'https://github.com/jane-codes',
+      linkedin: 'https://linkedin.com/in/jane-smith-cs',
+      twitter: 'https://twitter.com/jane_builds_stuff',
+      website: 'https://jane-builds.dev',
+      email: 'jane.smith@berkeley.edu',
     },
-    expertise: ['RAG Systems', 'Vector Databases', 'LLM Applications', 'Production ML'],
+    interests: ['RAG Systems', 'Vector Databases', 'Study Tools', 'Late Night Coding'],
   },
   'alex-chen': {
     id: 'alex-chen',
     name: 'Alex Chen',
-    bio: 'ML Platform Engineer specializing in LLMOps and model deployment at scale. Built inference infrastructure serving 100M+ requests daily.',
-    company: 'ScaleAI',
-    role: 'Principal ML Engineer',
-    location: 'Seattle, WA',
+    bio: 'Senior studying AI/ML who spent way too much money on AWS trying to deploy a simple chatbot. Now I help others avoid my expensive mistakes.',
+    school: 'MIT',
+    major: 'Artificial Intelligence',
+    year: 'Senior',
+    location: 'Cambridge, MA',
     joinDate: '2024-01-15',
     social: {
-      github: 'https://github.com/alex-chen',
-      linkedin: 'https://linkedin.com/in/alex-chen-ml',
-      twitter: 'https://twitter.com/alexbuildsml',
+      github: 'https://github.com/alex-deploys',
+      linkedin: 'https://linkedin.com/in/alex-chen-mit',
+      twitter: 'https://twitter.com/alex_deploys_ai',
     },
-    expertise: ['LLMOps', 'Model Deployment', 'Kubernetes', 'Infrastructure'],
+    interests: ['MLOps', 'Cloud Deployment', 'Cost Optimization', 'Breaking Things in Production'],
   },
   'sarah-johnson': {
     id: 'sarah-johnson',
     name: 'Sarah Johnson',
-    bio: 'Research Engineer focused on AI agents and autonomous systems. PhD in Computer Science from MIT, previously at DeepMind.',
-    company: 'Anthropic',
-    role: 'Research Engineer',
-    location: 'London, UK',
+    bio: 'Grad student researching AI agents who somehow convinced her advisor that building game NPCs counts as serious research. Spoiler: it does!',
+    school: 'Stanford University',
+    major: 'Computer Science PhD',
+    year: 'PhD Candidate',
+    location: 'Stanford, CA',
     joinDate: '2024-01-20',
     social: {
-      github: 'https://github.com/sarah-johnson',
-      website: 'https://sarahjohnson.ai',
-      twitter: 'https://twitter.com/sarah_ai_research',
+      github: 'https://github.com/sarah-agents',
+      website: 'https://sarah-research.github.io',
+      twitter: 'https://twitter.com/sarah_builds_agents',
     },
-    expertise: ['AI Agents', 'Reinforcement Learning', 'Multi-Agent Systems', 'Research'],
+    interests: ['AI Agents', 'Game Development', 'Multi-Agent Systems', 'Academic Procrastination'],
+  },
+  'marcus-rodriguez': {
+    id: 'marcus-rodriguez',
+    name: 'Marcus Rodriguez',
+    bio: 'Sophomore who discovered prompt engineering and now thinks he can solve everything with the right ChatGPT prompt. Sometimes he\'s actually right.',
+    school: 'University of Texas at Austin',
+    major: 'Computer Engineering',
+    year: 'Sophomore',
+    location: 'Austin, TX',
+    joinDate: '2024-01-25',
+    social: {
+      github: 'https://github.com/marcus-prompts',
+      twitter: 'https://twitter.com/marcus_prompts',
+      discord: 'marcus_prompts#1234',
+    },
+    interests: ['Prompt Engineering', 'Automation', 'Productivity Hacks', 'Convincing AI to Do Homework'],
   },
 };
 

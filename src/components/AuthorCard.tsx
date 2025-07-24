@@ -32,8 +32,11 @@ export default function AuthorCard({ authorId, showFullBio = false }: AuthorCard
         )}
         <div className="author-info">
           <h3 className="author-name">{author.name}</h3>
-          {author.role && author.company && (
-            <p className="author-role">{author.role} @ {author.company}</p>
+          {author.major && author.school && (
+            <p className="author-role">{author.major} @ {author.school}</p>
+          )}
+          {author.year && (
+            <p className="author-year">{author.year}</p>
           )}
           {author.location && (
             <p className="author-location">{author.location}</p>
@@ -45,12 +48,12 @@ export default function AuthorCard({ authorId, showFullBio = false }: AuthorCard
         <div className="author-bio">
           <p>{author.bio}</p>
           
-          {author.expertise && author.expertise.length > 0 && (
-            <div className="author-expertise">
-              <h4>Expertise</h4>
-              <div className="expertise-tags">
-                {author.expertise.map((skill, index) => (
-                  <span key={index} className="expertise-tag">{skill}</span>
+          {author.interests && author.interests.length > 0 && (
+            <div className="author-interests">
+              <h4>Interests</h4>
+              <div className="interests-tags">
+                {author.interests.map((interest, index) => (
+                  <span key={index} className="interest-tag">{interest}</span>
                 ))}
               </div>
             </div>
@@ -83,6 +86,11 @@ export default function AuthorCard({ authorId, showFullBio = false }: AuthorCard
           {author.social.email && (
             <a href={`mailto:${author.social.email}`} className="social-link">
               <span>Email</span>
+            </a>
+          )}
+          {author.social.discord && (
+            <a href="#" className="social-link" title={author.social.discord}>
+              <span>Discord</span>
             </a>
           )}
         </div>

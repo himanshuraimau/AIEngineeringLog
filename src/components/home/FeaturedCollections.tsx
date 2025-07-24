@@ -2,7 +2,7 @@ const featuredCollections = [
   {
     name: "RAG Systems",
     slug: "rag",
-    description: "Master document Q&A systems from basics to production scale",
+    description: "Build chatbots that actually know stuff about your documents (no more hallucinations!)",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="11" r="8"/>
@@ -13,12 +13,12 @@ const featuredCollections = [
     ),
     totalPosts: 10,
     featured: true,
-    tags: ["embeddings", "vector-db", "retrieval"]
+    tags: ["embeddings", "search", "chatbots"]
   },
   {
     name: "Prompt Engineering",
     slug: "prompt-engineering", 
-    description: "Learn advanced prompting techniques that actually work in production",
+    description: "Learn how to actually get AI models to do what you want (it's an art form, honestly)",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -28,12 +28,12 @@ const featuredCollections = [
     ),
     totalPosts: 13,
     featured: true,
-    tags: ["prompts", "chain-of-thought", "few-shot"]
+    tags: ["chatgpt", "prompts", "productivity"]
   },
   {
     name: "Production AI",
     slug: "production",
-    description: "Deploy, monitor, and scale AI systems in real-world environments",
+    description: "Making your cool side projects work reliably enough to show other people",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="3"/>
@@ -45,7 +45,7 @@ const featuredCollections = [
     ),
     totalPosts: 11,
     featured: true,
-    tags: ["deployment", "monitoring", "scaling"]
+    tags: ["deployment", "aws", "debugging"]
   }
 ];
 
@@ -53,7 +53,7 @@ export default function FeaturedCollections() {
   return (
     <section className="featured-collections-section">
       <h2 className="section-title">Featured Learning Paths</h2>
-      <p className="section-subtitle">Start your AI engineering journey with our most popular collections</p>
+      <p className="section-subtitle">Start your AI journey with our most popular collections (trust us, we've made all the mistakes already)</p>
       
       <div className="collections-grid">
         {featuredCollections.map((collection) => (
@@ -83,7 +83,7 @@ export default function FeaturedCollections() {
 
             <div className="collection-footer">
               <a href={`/collections/${collection.slug}`} className="start-learning-btn">
-                Start Learning →
+                Let's Build Something →
               </a>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function FeaturedCollections() {
       </div>
 
       <div className="view-all-collections">
-        <a href="/collections" className="view-all-link">Explore All Collections</a>
+        <a href="/collections" className="view-all-link">Check Out All Collections</a>
       </div>
     </section>
   );

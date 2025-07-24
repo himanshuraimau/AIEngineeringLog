@@ -7,23 +7,23 @@ const collections = [
   {
     title: "RAG Systems",
     slug: "rag",
-    description: "Learn to build Retrieval-Augmented Generation systems from scratch to production",
+    description: "Build chatbots that actually know stuff about your documents (no more hallucinations!)",
     posts: 9,
-    tags: ["rag", "embeddings", "vector-databases", "llm"]
+    tags: ["rag", "embeddings", "search", "chatbots"]
   },
   {
     title: "Prompt Engineering",
     slug: "prompt-engineering", 
-    description: "Master the art and science of crafting effective prompts for LLMs",
+    description: "Learn how to actually get AI models to do what you want (it's an art form, honestly)",
     posts: 6,
-    tags: ["prompts", "llm", "optimization", "techniques"]
+    tags: ["prompts", "chatgpt", "productivity"]
   },
   {
     title: "AI Agents",
     slug: "agents",
-    description: "Build autonomous AI agents that can reason, plan, and take actions",
+    description: "Build AI that can actually do stuff automatically - like having a really smart intern who never sleeps",
     posts: 8,
-    tags: ["agents", "reasoning", "planning", "tools"]
+    tags: ["agents", "automation", "tools"]
   }
 ];
 ---
@@ -38,60 +38,43 @@ const collections = [
     <main class="main-content">
       <header class="collections-header">
         <h1 class="collections-title">Learning Collections</h1>
+        <p class="collections-subtitle">Organized learning paths from students who've actually built this stuff</p>
       </header>
 
-             <div class="collections-grid">
-         {collections.map(collection => (
-           <article class="collection-card">
-             <div class="collection-header">
-               <div class="collection-stats">
-                 <span class="post-count">{collection.posts} posts</span>
-               </div>
-             </div>
-             
-             <h2 class="collection-title">
-               <a href={`/collections/${collection.slug}`}>{collection.title}</a>
-             </h2>
-             
-             <p class="collection-description">{collection.description}</p>
-             
-             <div class="collection-tags">
-               {collection.tags.map(tag => (
-                 <span class="tag">{tag}</span>
-               ))}
-             </div>
-             
-             <div class="collection-footer">
-               <a href={`/collections/${collection.slug}`} class="collection-link">
-                 Start Learning →
-               </a>
-             </div>
-           </article>
-         ))}
-       </div>
-
-      <section class="collections-info">
-        <h2>How Collections Work</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <h3>📚 Sequential Learning</h3>
-            <p>Posts are numbered and build on each other. Start from #1 and work your way through.</p>
-          </div>
-          <div class="info-item">
-            <h3>🛠️ Hands-on Projects</h3>
-            <p>Every post includes code examples and projects you can build and deploy.</p>
-          </div>
-          <div class="info-item">
-            <h3>👥 Written by Practitioners</h3>
-            <p>Authors have built and deployed these systems in production environments.</p>
-          </div>
-        </div>
-      </section>
+      <div class="collections-grid">
+        {collections.map(collection => (
+          <article class="collection-card">
+            <div class="collection-header">
+              <div class="collection-stats">
+                <span class="post-count">{collection.posts} posts</span>
+              </div>
+            </div>
+            
+            <h2 class="collection-title">
+              <a href={`/collections/${collection.slug}`}>{collection.title}</a>
+            </h2>
+            
+            <p class="collection-description">{collection.description}</p>
+            
+            <div class="collection-tags">
+              {collection.tags.map(tag => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            
+            <div class="collection-footer">
+              <a href={`/collections/${collection.slug}`} class="collection-link">
+                Let's Build Something →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
     </main>
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2025 AIEngineeringLog. Built with ❤️ by practitioners, for practitioners.</p>
+        <p>&copy; 2025 AIEngineeringLog. Made by students, for students. Still figuring it out together. ✨</p>
       </div>
     </footer>
   </div>

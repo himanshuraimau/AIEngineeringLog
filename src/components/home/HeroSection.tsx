@@ -4,16 +4,16 @@ export default function HeroSection() {
       <div className="hero-content">
         <div className="hero-text">
           <h1 className="hero-title">
-            Learn AI Engineering from Practitioners Who Built Real Systems
+            AI Engineering by Students, For Students
           </h1>
           
           <p className="hero-description">
-            A community-driven course where each post is a chapter written by practitioners who actually built the projects - not just watched tutorials. Real implementations, real challenges, real solutions.
+            Hey there! We're college students who've been tinkering with AI stuff and figured we'd share what we've learned. No corporate BS - just real projects, real struggles, and the solutions we actually found that worked. Think of it as study notes from your club seniors who've been there, done that.
           </p>
           
           <div className="hero-cta">
             <a href="/collections" className="btn btn-primary">
-              Start Learning
+              Let's Learn Together
             </a>
           </div>
         </div>
