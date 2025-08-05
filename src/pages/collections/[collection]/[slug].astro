@@ -3,10 +3,13 @@ import Layout from "../../../layouts/Layout.astro";
 import Navigation from "../../../components/home/Navigation.tsx";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { getCollectionSlugs } from "../../../config/collections.js";
-import { getCollectionConfig, CollectionError } from "../../../utils/collections.js";
+import {
+  getCollectionConfig,
+  CollectionError,
+} from "../../../utils/collections.js";
 
 // Type definitions for Astro props
-type CollectionSlug = 'rag' | 'agents' | 'prompt-engineering' | 'python-packages';
+type CollectionSlug = "python-packages" | "prompt-engineering";
 
 interface Props {
   post: CollectionEntry<CollectionSlug>;
@@ -40,7 +43,7 @@ export async function getStaticPaths() {
 
     return paths;
   } catch (error) {
-    console.error('Failed to generate static paths for post pages:', error);
+    console.error("Failed to generate static paths for post pages:", error);
     throw error;
   }
 }
@@ -64,14 +67,19 @@ try {
   const renderResult = await post.render();
   Content = renderResult.Content;
 } catch (error) {
-  console.error(`Failed to render post '${post.id}' in collection '${collection}':`, error);
-  throw new Error(`Failed to render post content: ${error instanceof Error ? error.message : String(error)}`);
+  console.error(
+    `Failed to render post '${post.id}' in collection '${collection}':`,
+    error
+  );
+  throw new Error(
+    `Failed to render post content: ${error instanceof Error ? error.message : String(error)}`
+  );
 }
 
 try {
   // Get collection metadata from central configuration
   collectionConfig = getCollectionConfig(collection);
-  
+
   try {
     // Get all posts in this collection for navigation
     allPosts = await getCollection(collection as any);
@@ -83,7 +91,10 @@ try {
     prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
     nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
   } catch (error) {
-    console.warn(`Failed to load navigation posts for collection '${collection}':`, error);
+    console.warn(
+      `Failed to load navigation posts for collection '${collection}':`,
+      error
+    );
     // Continue without navigation
   }
 } catch (error) {
@@ -94,15 +105,17 @@ try {
     console.error(`Unexpected error for collection '${collection}':`, error);
     errorMessage = `An unexpected error occurred while loading collection '${collection}'`;
   }
-  
+
   // Use fallback metadata
   collectionConfig = {
-    title: collection.charAt(0).toUpperCase() + collection.slice(1).replace(/-/g, ' '),
+    title:
+      collection.charAt(0).toUpperCase() +
+      collection.slice(1).replace(/-/g, " "),
     slug: collection,
     description: `Content collection: ${collection}`,
-    category: 'Unknown',
-    color: '#666666',
-    tags: [collection]
+    category: "Unknown",
+    color: "#666666",
+    tags: [collection],
   };
 }
 
@@ -159,12 +172,17 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
         <div class="post-tags-header">
           {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
         </div>
-        
-        {errorMessage && (
-          <div class="error-message" style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
-            <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
-          </div>
-        )}
+
+        {
+          errorMessage && (
+            <div
+              class="error-message"
+              style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;"
+            >
+              <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
+            </div>
+          )
+        }
       </header>
 
       {

@@ -8,9 +8,19 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    syntaxHighlight: 'prism',
+  },
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [mdx(), react()]
+  integrations: [
+    mdx({
+      syntaxHighlight: 'prism',
+      remarkPlugins: [],
+      rehypePlugins: [],
+    }), 
+    react()
+  ]
 });

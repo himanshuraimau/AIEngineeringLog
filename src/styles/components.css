@@ -1116,13 +1116,276 @@
 }
 
 .post-content-section pre {
-  background: var(--tag-bg-color);
-  border: 1px solid var(--grid-line-color);
+  background: var(--code-block-bg, #1a202c);
+  border: 1px solid var(--code-block-border, #2d3748);
   border-radius: var(--border-radius);
   padding: 15px;
   margin: 20px 0;
   overflow-x: auto;
   font-size: 14px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+[data-theme="dark"] .post-content-section pre {
+  background: var(--code-block-bg);
+  border: 1px solid var(--code-block-border);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.3), 0 4px 10px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Code block wrapper with copy functionality */
+.code-block-wrapper {
+  position: relative;
+  margin: 20px 0;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .code-block-wrapper {
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 10px -2px rgba(0, 0, 0, 0.3);
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--code-header-bg);
+  color: var(--code-header-text);
+  padding: 12px 15px;
+  border: none;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.code-block-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--code-header-bg);
+  opacity: 0.9;
+  z-index: -1;
+}
+
+.code-language {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.code-language::before {
+  content: '●';
+  font-size: 8px;
+  color: var(--code-button-border);
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--code-button-border);
+  color: var(--code-header-text);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+}
+
+.copy-button:hover {
+  background: var(--code-button-hover);
+  border-color: var(--code-button-hover-border);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .copy-button:hover {
+  box-shadow: 0 4px 12px rgba(79, 209, 199, 0.2);
+  background: var(--code-button-hover);
+}
+
+.copy-button.copied {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+  transform: scale(0.95);
+}
+
+.copy-button svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.copy-button:hover svg {
+  transform: scale(1.1);
+}
+
+.copy-text {
+  font-weight: 500;
+}
+
+.code-block-wrapper pre {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  background: var(--code-block-bg);
+  position: relative;
+}
+
+.code-block-wrapper pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--code-button-border) 0%, transparent 100%);
+}
+
+/* Ensure code blocks inside wrapper don't have extra margin */
+.code-block-wrapper pre code {
+  background: none;
+  padding: 0;
+  color: var(--text-color);
+  font-family: 'Fira Code', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace;
+  line-height: 1.5;
+}
+
+/* Syntax highlighting improvements */
+[data-theme="dark"] .code-block-wrapper pre code {
+  color: #f7fafc;
+}
+
+/* Add some glow effect for dark mode */
+[data-theme="dark"] .code-block-wrapper {
+  position: relative;
+}
+
+[data-theme="dark"] .code-block-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, transparent, rgba(79, 209, 199, 0.1), transparent);
+  border-radius: var(--border-radius);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .code-block-wrapper:hover::before {
+  opacity: 1;
+}
+
+/* Enhanced syntax highlighting */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--code-syntax-comment);
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: var(--text-color);
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--code-syntax-number);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--code-syntax-string);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: var(--code-syntax-keyword);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: var(--code-syntax-keyword);
+  font-weight: 600;
+}
+
+.token.function,
+.token.class-name {
+  color: var(--code-syntax-function);
+  font-weight: 500;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: var(--accent-color);
+}
+
+/* Special highlighting for Python */
+.language-python .token.keyword {
+  color: var(--code-syntax-keyword);
+  font-weight: 600;
+}
+
+.language-python .token.string {
+  color: var(--code-syntax-string);
+}
+
+.language-python .token.function {
+  color: var(--code-syntax-function);
+}
+
+.language-python .token.number {
+  color: var(--code-syntax-number);
+}
+
+.language-python .token.comment {
+  color: var(--code-syntax-comment);
+  font-style: italic;
+}
+
+/* Bash/shell specific highlighting */
+.language-bash .token.function,
+.language-bash .token.builtin {
+  color: var(--code-syntax-function);
+}
+
+.language-bash .token.string {
+  color: var(--code-syntax-string);
+}
+
+.language-bash .token.comment {
+  color: var(--code-syntax-comment);
 }
 
 .post-content-section code {
