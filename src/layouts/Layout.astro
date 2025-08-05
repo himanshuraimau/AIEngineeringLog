@@ -4,9 +4,20 @@ import "../styles/global.css";
 export interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  url?: string;
 }
 
-const { title = "AIEngineeringLog", description = "Study notes and project walkthroughs from college students building AI stuff. Real projects, real struggles, and what actually worked." } = Astro.props;
+const { 
+  title = "AIEngineeringLog", 
+  description = "A blog-based course on AI engineering by AI Brewery Club. Learn through practical projects and hands-on tutorials.",
+  image = "/assets/social-card.svg",
+  url = "https://aiengineeringlog.vercel.app"
+} = Astro.props;
+
+// Get the current page URL
+const currentUrl = url + Astro.url.pathname;
+const fullImageUrl = url + image;
 ---
 
 <!doctype html>
@@ -18,6 +29,28 @@ const { title = "AIEngineeringLog", description = "Study notes and project walkt
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={description} />
         <title>{title}</title>
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={fullImageUrl} />
+        <meta property="og:site_name" content="AIEngineeringLog" />
+        
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={currentUrl} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={fullImageUrl} />
+        <meta name="twitter:site" content="@aibreweryclub" />
+        <meta name="twitter:creator" content="@aibreweryclub" />
+        
+        <!-- Additional SEO -->
+        <meta name="author" content="AI Brewery Club" />
+        <meta name="keywords" content="AI, Machine Learning, Engineering, Programming, Tutorial, Course, Blog" />
+        <link rel="canonical" href={currentUrl} />
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
