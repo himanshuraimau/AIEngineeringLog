@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/home/Navigation.tsx';
 import HeroSection from '../components/home/HeroSection.tsx';
-import LatestPosts from '../components/home/LatestPosts.tsx';
+
 import FeaturedCollections from '../components/home/FeaturedCollections.tsx';
 ---
 
@@ -14,7 +14,6 @@ import FeaturedCollections from '../components/home/FeaturedCollections.tsx';
     <Navigation client:load currentPath="/" />
     <main class="main-content">
       <HeroSection client:load />
-      <LatestPosts client:load />
       <FeaturedCollections client:load />
     </main>
     

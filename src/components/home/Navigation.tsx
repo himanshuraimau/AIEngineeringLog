@@ -65,25 +65,11 @@ export default function Navigation({ currentPath = '/' }: NavigationProps) {
               Collections
             </a>
             <a 
-              href="/authors" 
-              className={`nav-link ${isActive('/authors') ? 'active' : ''}`}
-              onClick={closeMenu}
-            >
-              Authors
-            </a>
-            <a 
               href="/about" 
               className={`nav-link ${isActive('/about') ? 'active' : ''}`}
               onClick={closeMenu}
             >
               About
-            </a>
-            <a 
-              href="/contribute" 
-              className={`nav-link ${isActive('/contribute') ? 'active' : ''}`}
-              onClick={closeMenu}
-            >
-              Contribute
             </a>
           </div>
         </div>
