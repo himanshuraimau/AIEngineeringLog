@@ -20,7 +20,7 @@ export default function HeroSection() {
 
         <div className="hero-visual">
           <div className="hero-placeholder">
-           <img src="src/assets/hero-image.png" alt="Hero Image" />
+          <img src="/assets/hero-image.png" alt="Hero Image" />
           </div>
         </div>
       </div>
