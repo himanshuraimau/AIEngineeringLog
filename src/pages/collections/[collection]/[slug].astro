@@ -1,18 +1,47 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Navigation from "../../../components/home/Navigation.tsx";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import { getCollectionSlugs } from "../../../config/collections.js";
 import {
   getCollectionConfig,
   CollectionError,
 } from "../../../utils/collections.js";
 
-// Type definitions for Astro props
-type CollectionSlug = "python-packages" | "prompt-engineering";
+// Type definitions for post data structure
+interface PostData {
+  title: string;
+  description: string;
+  collection: string;
+  order: number;
+  author: string;
+  publishDate: Date;
+  lastUpdated?: Date;
+  readTime: string;
+  tags: string[];
+  prerequisites?: string[];
+  authorProfile?: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    website?: string;
+    email?: string;
+    youtube?: string;
+    medium?: string;
+    discord?: string;
+  };
+}
 
+interface Post {
+  id: string;
+  slug: string;
+  data: PostData;
+  render: () => Promise<{ Content: any }>;
+}
+
+// Type definitions for Astro props
 interface Props {
-  post: CollectionEntry<CollectionSlug>;
+  post: Post;
   collection: string;
 }
 
@@ -30,9 +59,10 @@ export async function getStaticPaths() {
         const filteredPosts = posts.filter((post: any) => post.id !== "index");
 
         for (const post of filteredPosts) {
+          const typedPost = post as Post;
           paths.push({
-            params: { collection, slug: (post as any).id },
-            props: { post: post as any, collection },
+            params: { collection, slug: typedPost.id },
+            props: { post: typedPost, collection },
           });
         }
       } catch (error) {
@@ -56,10 +86,10 @@ if (!post || !collection) {
 
 let Content: any;
 let collectionConfig: any;
-let allPosts: any[] = [];
-let posts: any[] = [];
-let prevPost: any = null;
-let nextPost: any = null;
+let allPosts: Post[] = [];
+let posts: Post[] = [];
+let prevPost: Post | null = null;
+let nextPost: Post | null = null;
 let errorMessage: string | null = null;
 
 try {
@@ -82,14 +112,14 @@ try {
 
   try {
     // Get all posts in this collection for navigation
-    allPosts = await getCollection(collection as any);
+    allPosts = await getCollection(collection as any) as Post[];
     posts = allPosts
-      .filter((p: any) => p.id !== "index")
-      .sort((a: any, b: any) => a.data.order - b.data.order);
+      .filter((p: Post) => p.id !== "index")
+      .sort((a: Post, b: Post) => a.data.order - b.data.order);
 
-    const currentIndex = posts.findIndex((p: any) => p.id === post.id);
-    prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
-    nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+    const currentIndex = posts.findIndex((p: Post) => p.id === post.id);
+    prevPost = currentIndex > 0 ? (posts[currentIndex - 1] || null) : null;
+    nextPost = currentIndex < posts.length - 1 ? (posts[currentIndex + 1] || null) : null;
   } catch (error) {
     console.warn(
       `Failed to load navigation posts for collection '${collection}':`,
@@ -216,6 +246,11 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
       <article class="post-content-section">
         <Content />
       </article>
+
+      <!-- Initialize code blocks with copy functionality -->
+      <script>
+        import '../../../scripts/codeBlocks.js';
+      </script>
 
       {
         post.data.authorProfile && (

@@ -52,7 +52,7 @@ try {
             <p class="collection-description">{collection.description}</p>
             
             <div class="collection-tags">
-              {collection.tags.map(tag => (
+              {collection.tags.map((tag: string) => (
                 <span class="tag">{tag}</span>
               ))}
             </div>
