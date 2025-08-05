@@ -8,7 +8,7 @@ export default function HeroSection() {
           </h1>
           
           <p className="hero-description">
-            Hey there! We're college students who've been tinkering with AI stuff and figured we'd share what we've learned. No corporate BS - just real projects, real struggles, and the solutions we actually found that worked. Think of it as study notes from your club seniors who've been there, done that.
+            Real AI projects, real challenges, real solutions. Study notes from students who've built AI stuff and want to share what actually works.
           </p>
           
           <div className="hero-cta">
