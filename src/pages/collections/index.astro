@@ -1,31 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Navigation from '../../components/home/Navigation.tsx';
+import { getAllCollectionsWithStatsSafe } from '../../utils/collections.js';
 
-// Define collections metadata
-const collections = [
-  {
-    title: "RAG Systems",
-    slug: "rag",
-    description: "Build chatbots that actually know stuff about your documents (no more hallucinations!)",
-    posts: 9,
-    tags: ["rag", "embeddings", "search", "chatbots"]
-  },
-  {
-    title: "Prompt Engineering",
-    slug: "prompt-engineering", 
-    description: "Learn how to actually get AI models to do what you want (it's an art form, honestly)",
-    posts: 6,
-    tags: ["prompts", "chatgpt", "productivity"]
-  },
-  {
-    title: "AI Agents",
-    slug: "agents",
-    description: "Build AI that can actually do stuff automatically - like having a really smart intern who never sleeps",
-    posts: 8,
-    tags: ["agents", "automation", "tools"]
-  }
-];
+// Get all collections with dynamic post counts from central configuration
+// Using safe version to ensure page always loads even if there are errors
+let collections: any[] = [];
+let errorMessage: string | null = null;
+
+try {
+  collections = await getAllCollectionsWithStatsSafe();
+} catch (error) {
+  console.error('Failed to load collections:', error);
+  errorMessage = 'Failed to load collections. Please try again later.';
+  collections = [];
+}
 ---
 
 <Layout 
@@ -39,6 +28,12 @@ const collections = [
       <header class="collections-header">
         <h1 class="collections-title">Learning Collections</h1>
         <p class="collections-subtitle">Organized learning paths from students who've actually built this stuff</p>
+        
+        {errorMessage && (
+          <div class="error-message" style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+            <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
+          </div>
+        )}
       </header>
 
       <div class="collections-grid">
@@ -46,7 +41,7 @@ const collections = [
           <article class="collection-card">
             <div class="collection-header">
               <div class="collection-stats">
-                <span class="post-count">{collection.posts} posts</span>
+                <span class="post-count">{collection.postCount} posts</span>
               </div>
             </div>
             

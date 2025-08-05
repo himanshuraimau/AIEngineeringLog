@@ -2,57 +2,79 @@
 import Layout from '../../../layouts/Layout.astro';
 import Navigation from '../../../components/home/Navigation.tsx';
 import { getCollection, render } from 'astro:content';
+import { getCollectionStaticPaths, getCollectionConfig, CollectionError } from '../../../utils/collections.js';
 
 export async function getStaticPaths() {
-  return [
-    { params: { collection: 'rag' } },
-    { params: { collection: 'prompt-engineering' } },
-    { params: { collection: 'agents' } },
-  ];
+  try {
+    return getCollectionStaticPaths();
+  } catch (error) {
+    console.error('Failed to generate static paths for collection pages:', error);
+    throw error;
+  }
 }
 
 const { collection } = Astro.params;
 
-// Get all posts for this collection
-const allPosts = await getCollection(collection as any);
-const posts = allPosts
-  .filter((post: any) => post.id !== 'index')
-  .sort((a: any, b: any) => a.data.order - b.data.order);
-
-// Get collection metadata
-const collectionIndex = allPosts.find((post: any) => post.id === 'index');
-
-// Render collection index content if it exists
-let CollectionIndexContent: any = null;
-if (collectionIndex) {
-  const { Content } = await render(collectionIndex as any);
-  CollectionIndexContent = Content;
+if (!collection || typeof collection !== 'string') {
+  throw new Error(`Invalid collection parameter: ${collection}`);
 }
 
-// Collection metadata
-const collectionMeta = {
-  rag: {
-    title: "RAG Systems",
-    description: "Learn to build Retrieval-Augmented Generation systems from scratch to production",
-    category: "Building",
-    color: "#8b4513"
-  },
-  'prompt-engineering': {
-    title: "Prompt Engineering", 
-    description: "Master the art and science of crafting effective prompts for LLMs",
-    category: "Foundations",
-    color: "#2d5016"
-  },
-  agents: {
-    title: "AI Agents",
-    description: "Build autonomous AI agents that can reason, plan, and take actions",
-    category: "Advanced", 
-    color: "#1a365d"
+let collectionMeta;
+let allPosts: any[] = [];
+let posts: any[] = [];
+let CollectionIndexContent: any = null;
+let errorMessage: string | null = null;
+
+try {
+  // Get collection metadata from central configuration
+  collectionMeta = getCollectionConfig(collection);
+  
+  try {
+    // Get all posts for this collection
+    allPosts = await getCollection(collection as any);
+    posts = allPosts
+      .filter((post: any) => post.id !== 'index')
+      .sort((a: any, b: any) => a.data.order - b.data.order);
+
+    // Get collection metadata
+    const collectionIndex = allPosts.find((post: any) => post.id === 'index');
+
+    // Render collection index content if it exists
+    if (collectionIndex) {
+      try {
+        const { Content } = await render(collectionIndex as any);
+        CollectionIndexContent = Content;
+      } catch (error) {
+        console.warn(`Failed to render collection index for '${collection}':`, error);
+        // Continue without index content
+      }
+    }
+  } catch (error) {
+    console.warn(`No content found for collection '${collection}':`, error);
+    // Continue with empty posts array
   }
-}[collection] || {};
+} catch (error) {
+  if (error instanceof CollectionError) {
+    console.error(`Collection error for '${collection}':`, error);
+    errorMessage = error.message;
+  } else {
+    console.error(`Unexpected error for collection '${collection}':`, error);
+    errorMessage = `An unexpected error occurred while loading collection '${collection}'`;
+  }
+  
+  // Use fallback metadata
+  collectionMeta = {
+    title: collection.charAt(0).toUpperCase() + collection.slice(1).replace(/-/g, ' '),
+    slug: collection,
+    description: `Content collection: ${collection}`,
+    category: 'Unknown',
+    color: '#666666',
+    tags: [collection]
+  };
+}
 
 const pageTitle = `${collectionMeta.title} - AIEngineeringLog`;
-const pageDescription = collectionMeta.description || "";
+const pageDescription = collectionMeta.description;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -74,6 +96,12 @@ const pageDescription = collectionMeta.description || "";
         
         <h1 class="collection-landing-title">{collectionMeta.title}</h1>
         <p class="collection-landing-description">{collectionMeta.description}</p>
+        
+        {errorMessage && (
+          <div class="error-message" style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+            <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
+          </div>
+        )}
       </header>
 
       {CollectionIndexContent && (

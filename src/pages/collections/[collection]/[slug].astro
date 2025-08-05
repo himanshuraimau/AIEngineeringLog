@@ -1,50 +1,112 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Navigation from "../../../components/home/Navigation.tsx";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollectionSlugs } from "../../../config/collections.js";
+import { getCollectionConfig, CollectionError } from "../../../utils/collections.js";
 
-export async function getStaticPaths() {
-  const collections = ["rag", "prompt-engineering", "agents"] as const;
-  const paths = [];
+// Type definitions for Astro props
+type CollectionSlug = 'rag' | 'agents' | 'prompt-engineering' | 'python-packages';
 
-  for (const collection of collections) {
-    const posts = await getCollection(collection);
-    const filteredPosts = posts.filter((post) => post.id !== "index");
-
-    for (const post of filteredPosts) {
-      paths.push({
-        params: { collection, slug: post.id },
-        props: { post, collection },
-      });
-    }
-  }
-
-  return paths;
+interface Props {
+  post: CollectionEntry<CollectionSlug>;
+  collection: string;
 }
 
-const { post, collection } = Astro.props;
-const { Content } = await post.render();
+export async function getStaticPaths() {
+  try {
+    const collectionSlugs = getCollectionSlugs();
+    const paths: Array<{
+      params: { collection: string; slug: string };
+      props: Props;
+    }> = [];
 
-// Get all posts in this collection for navigation
-const allPosts = await getCollection(collection);
-const posts = allPosts
-  .filter((p) => p.id !== "index")
-  .sort((a, b) => a.data.order - b.data.order);
+    for (const collection of collectionSlugs) {
+      try {
+        const posts = await getCollection(collection as any);
+        const filteredPosts = posts.filter((post: any) => post.id !== "index");
 
-const currentIndex = posts.findIndex((p) => p.id === post.id);
-const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
-const nextPost =
-  currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+        for (const post of filteredPosts) {
+          paths.push({
+            params: { collection, slug: (post as any).id },
+            props: { post: post as any, collection },
+          });
+        }
+      } catch (error) {
+        // Skip collections that don't have content yet
+        console.warn(`No content found for collection '${collection}':`, error);
+      }
+    }
 
-// Collection metadata
-const collectionMeta =
-  {
-    rag: { title: "RAG Systems", color: "#8b4513" },
-    "prompt-engineering": { title: "Prompt Engineering", color: "#2d5016" },
-    agents: { title: "AI Agents", color: "#1a365d" },
-  }[collection] || {};
+    return paths;
+  } catch (error) {
+    console.error('Failed to generate static paths for post pages:', error);
+    throw error;
+  }
+}
 
-const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
+const { post, collection }: Props = Astro.props;
+
+if (!post || !collection) {
+  throw new Error(`Invalid props: post=${post}, collection=${collection}`);
+}
+
+let Content: any;
+let collectionConfig: any;
+let allPosts: any[] = [];
+let posts: any[] = [];
+let prevPost: any = null;
+let nextPost: any = null;
+let errorMessage: string | null = null;
+
+try {
+  // Render post content
+  const renderResult = await post.render();
+  Content = renderResult.Content;
+} catch (error) {
+  console.error(`Failed to render post '${post.id}' in collection '${collection}':`, error);
+  throw new Error(`Failed to render post content: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+try {
+  // Get collection metadata from central configuration
+  collectionConfig = getCollectionConfig(collection);
+  
+  try {
+    // Get all posts in this collection for navigation
+    allPosts = await getCollection(collection as any);
+    posts = allPosts
+      .filter((p: any) => p.id !== "index")
+      .sort((a: any, b: any) => a.data.order - b.data.order);
+
+    const currentIndex = posts.findIndex((p: any) => p.id === post.id);
+    prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+    nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+  } catch (error) {
+    console.warn(`Failed to load navigation posts for collection '${collection}':`, error);
+    // Continue without navigation
+  }
+} catch (error) {
+  if (error instanceof CollectionError) {
+    console.error(`Collection error for '${collection}':`, error);
+    errorMessage = error.message;
+  } else {
+    console.error(`Unexpected error for collection '${collection}':`, error);
+    errorMessage = `An unexpected error occurred while loading collection '${collection}'`;
+  }
+  
+  // Use fallback metadata
+  collectionConfig = {
+    title: collection.charAt(0).toUpperCase() + collection.slice(1).replace(/-/g, ' '),
+    slug: collection,
+    description: `Content collection: ${collection}`,
+    category: 'Unknown',
+    color: '#666666',
+    tags: [collection]
+  };
+}
+
+const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
 ---
 
 <Layout title={pageTitle} description={post.data.description}>
@@ -55,7 +117,7 @@ const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
       <header class="post-header-section">
         <div class="post-breadcrumb">
           <a href="/collections">Collections</a> →
-          <a href={`/collections/${collection}`}>{collectionMeta.title}</a> →
+          <a href={`/collections/${collection}`}>{collectionConfig.title}</a> →
           {post.data.title}
         </div>
 
@@ -95,8 +157,14 @@ const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
         <p class="post-description-header">{post.data.description}</p>
 
         <div class="post-tags-header">
-          {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+          {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
         </div>
+        
+        {errorMessage && (
+          <div class="error-message" style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+            <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
+          </div>
+        )}
       </header>
 
       {
@@ -104,7 +172,7 @@ const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
           <section class="prerequisites-section">
             <h3>Prerequisites</h3>
             <div class="prerequisites-list">
-              {post.data.prerequisites.map((prereq) => {
+              {post.data.prerequisites.map((prereq: string) => {
                 const prereqPost = posts.find((p) => p.slug === prereq);
                 return prereqPost ? (
                   <a
@@ -200,7 +268,7 @@ const pageTitle = `${post.data.title} - ${collectionMeta.title}`;
 
           <a href={`/collections/${collection}`} class="nav-link collection">
             <span class="nav-direction">↑ Collection</span>
-            <span class="nav-title">{collectionMeta.title}</span>
+            <span class="nav-title">{collectionConfig.title}</span>
           </a>
 
           {
