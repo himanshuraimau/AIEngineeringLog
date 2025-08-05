@@ -4,16 +4,16 @@ export default function HeroSection() {
       <div className="hero-content">
         <div className="hero-text">
           <h1 className="hero-title">
-            AI Engineering by Students, For Students
+            AI Engineering
           </h1>
           
           <p className="hero-description">
-            Real AI projects, real challenges, real solutions. Study notes from students who've built AI stuff and want to share what actually works.
+            A blog-based course on AI engineering by AI Brewery Club
           </p>
           
           <div className="hero-cta">
             <a href="/collections" className="btn btn-primary">
-              Let's Learn Together
+              Start Learning
             </a>
           </div>
         </div>
