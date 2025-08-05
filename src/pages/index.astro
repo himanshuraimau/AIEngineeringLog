@@ -2,24 +2,50 @@
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/home/Navigation.tsx';
 import HeroSection from '../components/home/HeroSection.tsx';
-
 import FeaturedCollections from '../components/home/FeaturedCollections.tsx';
+import { getCollection } from 'astro:content';
+import { COLLECTIONS_CONFIG } from '../config/collections.js';
+
+// Fetch collections data dynamically
+const collectionsWithStats = await Promise.all(
+  Object.entries(COLLECTIONS_CONFIG).map(async ([slug, config]) => {
+    try {
+      const posts = await getCollection(slug as any);
+      const postCount = posts.filter((post: any) => post.id !== 'index').length;
+      
+      return {
+        ...config,
+        totalPosts: postCount,
+        featured: true, // Mark all as featured for now
+      };
+    } catch (error) {
+      // If collection doesn't exist yet, return with 0 posts
+      return {
+        ...config,
+        totalPosts: 0,
+        featured: true,
+      };
+    }
+  })
+);
 ---
 
 <Layout 
-  title="AIEngineeringLog - By Students, For Students"
-  description="Study notes and project walkthroughs from college students who've been building AI stuff. No corporate BS - just real projects, real struggles, and what actually worked."
+  title="AIEngineeringLog - AI Brewery Club"
+  description="A blog-based course on AI engineering by AI Brewery Club. Learn through practical projects and hands-on tutorials."
+  image="/assets/social-card.svg"
+  url="https://aiengineeringlog.vercel.app"
 >
   <div class="page-container">
     <Navigation client:load currentPath="/" />
     <main class="main-content">
       <HeroSection client:load />
-      <FeaturedCollections client:load />
+      <FeaturedCollections client:load collectionsData={collectionsWithStats} />
     </main>
     
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2025 AIEngineeringLog. Made by students, for students. Still figuring it out together. ✨</p>
+        <p>&copy; 2025 AIEngineeringLog. AI Brewery Club. ✨</p>
         </div>
       </div>
     </footer>

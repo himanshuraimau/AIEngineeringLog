@@ -30,7 +30,6 @@ export default function Navigation({ currentPath = '/' }: NavigationProps) {
         <div className="nav-header">
           <div className="logo-info">
             <h1 className="logo-text">AIEngineeringLog</h1>
-            <p className="tagline">Study notes from students who've actually built stuff</p>
           </div>
           
           <div className="nav-controls">

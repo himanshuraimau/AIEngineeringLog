@@ -20,37 +20,21 @@ export interface CollectionWithStats extends CollectionConfig {
 
 // Central collections configuration - single source of truth
 export const COLLECTIONS_CONFIG: Record<string, CollectionConfig> = {
-  'rag': {
-    title: "RAG Systems",
-    slug: "rag",
-    description: "Learn to build Retrieval-Augmented Generation systems from scratch to production",
-    category: "Building",
-    color: "#8b4513",
-    tags: ["rag", "embeddings", "search", "chatbots"]
+  'package-management': {
+    title: "Package Management",
+    slug: "package-management",
+    description: "Master Python dependency management tools and best practices",
+    category: "Tools",
+    color: "#3776ab",
+    tags: ["python", "dependencies", "uv", "pip", "tools"]
   },
   'prompt-engineering': {
     title: "Prompt Engineering",
-    slug: "prompt-engineering", 
+    slug: "prompt-engineering",
     description: "Master the art and science of crafting effective prompts for LLMs",
     category: "Foundations",
     color: "#2d5016",
     tags: ["prompts", "chatgpt", "productivity"]
-  },
-  'agents': {
-    title: "AI Agents",
-    slug: "agents",
-    description: "Build autonomous AI agents that can reason, plan, and take actions",
-    category: "Advanced",
-    color: "#1a365d",
-    tags: ["agents", "automation", "tools"]
-  },
-  'python-packages': {
-    title: "Python Packages",
-    slug: "python-packages",
-    description: "Learn to build and publish Python packages for AI engineering",
-    category: "Tools",
-    color: "#3776ab",
-    tags: ["python", "packages", "tools", "development"]
   }
 };
 

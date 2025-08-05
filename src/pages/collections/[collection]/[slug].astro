@@ -1,15 +1,47 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Navigation from "../../../components/home/Navigation.tsx";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import { getCollectionSlugs } from "../../../config/collections.js";
-import { getCollectionConfig, CollectionError } from "../../../utils/collections.js";
+import {
+  getCollectionConfig,
+  CollectionError,
+} from "../../../utils/collections.js";
+
+// Type definitions for post data structure
+interface PostData {
+  title: string;
+  description: string;
+  collection: string;
+  order: number;
+  author: string;
+  publishDate: Date;
+  lastUpdated?: Date;
+  readTime: string;
+  tags: string[];
+  prerequisites?: string[];
+  authorProfile?: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    website?: string;
+    email?: string;
+    youtube?: string;
+    medium?: string;
+    discord?: string;
+  };
+}
+
+interface Post {
+  id: string;
+  slug: string;
+  data: PostData;
+  render: () => Promise<{ Content: any }>;
+}
 
 // Type definitions for Astro props
-type CollectionSlug = 'rag' | 'agents' | 'prompt-engineering' | 'python-packages';
-
 interface Props {
-  post: CollectionEntry<CollectionSlug>;
+  post: Post;
   collection: string;
 }
 
@@ -27,9 +59,10 @@ export async function getStaticPaths() {
         const filteredPosts = posts.filter((post: any) => post.id !== "index");
 
         for (const post of filteredPosts) {
+          const typedPost = post as Post;
           paths.push({
-            params: { collection, slug: (post as any).id },
-            props: { post: post as any, collection },
+            params: { collection, slug: typedPost.id },
+            props: { post: typedPost, collection },
           });
         }
       } catch (error) {
@@ -40,7 +73,7 @@ export async function getStaticPaths() {
 
     return paths;
   } catch (error) {
-    console.error('Failed to generate static paths for post pages:', error);
+    console.error("Failed to generate static paths for post pages:", error);
     throw error;
   }
 }
@@ -53,10 +86,10 @@ if (!post || !collection) {
 
 let Content: any;
 let collectionConfig: any;
-let allPosts: any[] = [];
-let posts: any[] = [];
-let prevPost: any = null;
-let nextPost: any = null;
+let allPosts: Post[] = [];
+let posts: Post[] = [];
+let prevPost: Post | null = null;
+let nextPost: Post | null = null;
 let errorMessage: string | null = null;
 
 try {
@@ -64,26 +97,34 @@ try {
   const renderResult = await post.render();
   Content = renderResult.Content;
 } catch (error) {
-  console.error(`Failed to render post '${post.id}' in collection '${collection}':`, error);
-  throw new Error(`Failed to render post content: ${error instanceof Error ? error.message : String(error)}`);
+  console.error(
+    `Failed to render post '${post.id}' in collection '${collection}':`,
+    error
+  );
+  throw new Error(
+    `Failed to render post content: ${error instanceof Error ? error.message : String(error)}`
+  );
 }
 
 try {
   // Get collection metadata from central configuration
   collectionConfig = getCollectionConfig(collection);
-  
+
   try {
     // Get all posts in this collection for navigation
-    allPosts = await getCollection(collection as any);
+    allPosts = await getCollection(collection as any) as Post[];
     posts = allPosts
-      .filter((p: any) => p.id !== "index")
-      .sort((a: any, b: any) => a.data.order - b.data.order);
+      .filter((p: Post) => p.id !== "index")
+      .sort((a: Post, b: Post) => a.data.order - b.data.order);
 
-    const currentIndex = posts.findIndex((p: any) => p.id === post.id);
-    prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
-    nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+    const currentIndex = posts.findIndex((p: Post) => p.id === post.id);
+    prevPost = currentIndex > 0 ? (posts[currentIndex - 1] || null) : null;
+    nextPost = currentIndex < posts.length - 1 ? (posts[currentIndex + 1] || null) : null;
   } catch (error) {
-    console.warn(`Failed to load navigation posts for collection '${collection}':`, error);
+    console.warn(
+      `Failed to load navigation posts for collection '${collection}':`,
+      error
+    );
     // Continue without navigation
   }
 } catch (error) {
@@ -94,15 +135,17 @@ try {
     console.error(`Unexpected error for collection '${collection}':`, error);
     errorMessage = `An unexpected error occurred while loading collection '${collection}'`;
   }
-  
+
   // Use fallback metadata
   collectionConfig = {
-    title: collection.charAt(0).toUpperCase() + collection.slice(1).replace(/-/g, ' '),
+    title:
+      collection.charAt(0).toUpperCase() +
+      collection.slice(1).replace(/-/g, " "),
     slug: collection,
     description: `Content collection: ${collection}`,
-    category: 'Unknown',
-    color: '#666666',
-    tags: [collection]
+    category: "Unknown",
+    color: "#666666",
+    tags: [collection],
   };
 }
 
@@ -159,12 +202,17 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
         <div class="post-tags-header">
           {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
         </div>
-        
-        {errorMessage && (
-          <div class="error-message" style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
-            <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
-          </div>
-        )}
+
+        {
+          errorMessage && (
+            <div
+              class="error-message"
+              style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;"
+            >
+              <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
+            </div>
+          )
+        }
       </header>
 
       {
@@ -198,6 +246,11 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
       <article class="post-content-section">
         <Content />
       </article>
+
+      <!-- Initialize code blocks with copy functionality -->
+      <script>
+        import '../../../scripts/codeBlocks.js';
+      </script>
 
       {
         post.data.authorProfile && (
