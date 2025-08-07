@@ -1,0 +1,301 @@
+---
+title: "Prompt Engineering 101 - How to Talk So AI Understands You"
+description: "Learn the fundamentals of prompt engineering with practical examples and set up Google Gemini API for building AI applications"
+collection: "prompt-engineering"
+order: 1
+author: "himanshu"
+publishDate: 2025-01-15
+readTime: "8 min read"
+tags: ["prompt-engineering", "llm", "ai", "gemini", "chatgpt", "beginners"]
+prerequisites: []
+authorProfile:
+  website: "https://enghimanshu.space"
+---
+
+# Prompt Engineering 101 - How to Talk So AI Understands You
+
+If you've ever used ChatGPT, you know it gives answers based on the prompts you provide. Sometimes, those answers are spot-on; other times, they're way off! That's where prompt engineering comes in—it's about crafting prompts that help AI, like Google Gemini, understand exactly what you want. This post is for beginners who want to build simple AI applications, like generating text or writing code, by learning how to create effective prompts. We'll also set up the free Google Gemini API to start experimenting. Let's dive in!
+
+## What is Prompt Engineering and Why It Matters
+
+Prompt engineering is like giving clear instructions to a super-smart but literal assistant. When you chat with AI, your prompt (the question or command you give) determines the quality of the answer. A vague prompt can confuse the AI, while a clear one gets you the right result. For example, if you're building an app that writes stories or solves math problems, good prompts ensure the AI delivers what your users expect.
+
+Why does this matter? When building AI applications, you want:
+
+- **Accurate Results**: The AI does what you intend.
+- **Consistency**: Reliable outputs every time.
+- **Efficiency**: Less time tweaking prompts to get it right.
+
+Let's explore how to make prompts work for you.
+
+## Good vs. Bad Prompts: Side-by-Side Examples
+
+Here's how good and bad prompts compare for common tasks. These examples show why clear instructions matter.
+
+### Text Generation
+
+**Bad Prompt**: "Tell me about animals."
+- **Problem**: Too vague. The AI might write about anything from pets to dinosaurs!
+- **Example Output**: "Animals are cool." (Not helpful)
+
+**Good Prompt**: "Write a 50-word description of a lion's habitat in the African savanna."
+- **Why It Works**: Specifies the animal, word count, and location.
+- **Example Output**: "Lions live in the African savanna, a vast grassland with scattered trees. Their habitat supports herds of prey like zebras and antelopes. Lions rest in shaded areas during the day and hunt at dusk, thriving in warm, dry climates with access to water sources like rivers."
+
+### Coding
+
+**Bad Prompt**: "Write some code."
+- **Problem**: No language or task specified. You might get random code that's useless.
+- **Example Output**: A generic "Hello, World!" script.
+
+**Good Prompt**: "Write a Python function to find the square of a number."
+- **Why It Works**: Specifies the language (Python) and task (square of a number).
+- **Example Output**:
+```python
+def square(num):
+    return num * num
+
+print(square(5))  # Output: 25
+```
+
+### Summarization
+
+**Bad Prompt**: "Summarize this."
+- **Problem**: No document or details provided. The AI can't guess what to summarize.
+- **Example Output**: "Please provide the text to summarize."
+
+**Good Prompt**: "Summarize a 500-word article about renewable energy in 50 words, focusing on solar power benefits."
+- **Why It Works**: Specifies the topic, word count, and focus (solar power).
+- **Example Output**: "Solar power, a renewable energy source, reduces carbon emissions and energy costs. It harnesses sunlight through panels, providing clean electricity. Benefits include sustainability, low maintenance, and accessibility in remote areas, making it a key solution for combating climate change and promoting energy independence."
+
+## Use Cases for Prompt Engineering
+
+Prompt engineering is super useful when building AI apps. Here are three common uses:
+
+- **Text Generation**: Create blog posts, emails, or stories (e.g., "Write a funny 100-word story about a cat").
+- **Coding**: Generate scripts for apps or automation (e.g., "Write a Python script to sort a list").
+- **Summarization**: Condense long texts for quick insights (e.g., "Summarize a news article in 50 words").
+
+## Zero-Shot, Few-Shot, and Role-Based Prompting Basics
+
+To make prompts even better, you can use these beginner-friendly techniques:
+
+### Zero-Shot Prompting
+
+**What It Is**: Asking the AI to do something without giving examples.
+
+**Example**: "What is the capital of France?"
+**Output**: "The capital of France is Paris."
+
+**When to Use**: Simple tasks where the AI already knows the answer.
+- **Pros**: Quick and easy.
+- **Cons**: May not work for complex or specific tasks.
+
+### Few-Shot Prompting
+
+**What It Is**: Giving a few examples to show the AI what you want.
+
+**Example**:
+```
+Input: "small" -> Output: "tiny"
+Input: "fast" -> Output: "quick"
+Input: "tall" -> Output: ?
+```
+
+**Output**: "high"
+
+**When to Use**: When you need the AI to follow a pattern, like synonyms or translations.
+- **Pros**: Helps the AI understand specific formats.
+- **Cons**: Takes a bit more effort to write examples.
+
+### Role-Based Prompting
+
+**What It Is**: Telling the AI to act like a specific person, like a teacher or coder.
+
+**Example**: "Act as a science teacher and explain gravity in simple terms."
+**Output**: "Gravity is a force that pulls objects toward each other, like how the Earth pulls you down so you don't float away. It's why apples fall from trees!"
+
+**When to Use**: When you want a specific tone or expertise.
+- **Pros**: Makes answers more tailored and engaging.
+- **Cons**: You might need to tweak the role for the best results.
+
+## Setting Up Your Project with uv and Google Gemini API (Free)
+
+To start building AI apps with prompts, we'll use the free Google Gemini API and set up a project using uv, a fast and simple tool for managing Python projects. This guide is beginner-friendly, assuming you have basic knowledge of Python and a computer with internet access. All code for this post is available in the GitHub repository: https://github.com/AI-Brewery/aienglog-codes, in the module1/post1.py file.
+
+### Step 1: Install uv
+
+uv is a tool that makes setting up Python projects easy by managing dependencies and virtual environments. If you don't have uv installed:
+
+1. Go to https://docs.astral.sh/uv/ and follow the installation instructions for your system (Windows, macOS, or Linux).
+2. For example, on macOS/Linux, run:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+3. On Windows, use PowerShell:
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+4. Verify uv is installed by running:
+```bash
+uv --version
+```
+
+### Step 2: Fork and Clone the Repository
+
+The code for this post is in the module1/post1.py file in the AI-Brewery/aienglog-codes repository. To use it:
+
+1. Go to the repository: https://github.com/AI-Brewery/aienglog-codes.
+2. Click the Fork button (top-right) to create your own copy of the repo on GitHub.
+3. Clone your forked repo to your computer:
+```bash
+git clone https://github.com/YOUR-USERNAME/aienglog-codes.git
+```
+   Replace YOUR-USERNAME with your GitHub username.
+4. Navigate to the module1 folder:
+```bash
+cd aienglog-codes/module1
+```
+
+### Step 3: Set Up the Project with uv
+
+Inside the module1 folder, use uv to set up the project and install dependencies (like the google-genai package):
+
+1. Run:
+```bash
+uv sync
+```
+
+   This creates a virtual environment and installs all dependencies listed in the pyproject.toml file (included in the repo).
+
+2. Activate the virtual environment:
+   - On macOS/Linux: `source .venv/bin/activate`
+   - On Windows: `.venv\Scripts\activate`
+
+3. Verify the google-genai package is installed:
+```bash
+pip list
+```
+
+   Look for google-genai in the list.
+
+### Step 4: Get Your Gemini API Key and Set Up Environment Variables
+
+To use the Gemini API, you need a free API key from Google AI Studio:
+
+1. Go to [Google AI Studio](https://aistudio.google.com/).
+2. Sign in with your Google account.
+3. In the left sidebar, click Get API Key.
+4. Click Create API Key (or Generate API Key if prompted).
+5. Copy the API key shown on the screen.
+
+#### Option 1: Using a .env file (Recommended)
+
+Create a `.env` file in your module1 folder:
+
+```bash
+touch .env
+```
+
+Add your API key to the `.env` file:
+```bash
+echo "GEMINI_API_KEY=your-api-key-here" >> .env
+```
+
+Replace `your-api-key-here` with the key you copied.
+
+#### Option 2: Setting Environment Variables Directly
+
+- On macOS/Linux:
+```bash
+export GEMINI_API_KEY=your-api-key-here
+```
+- On Windows:
+```cmd
+set GEMINI_API_KEY=your-api-key-here
+```
+
+**Important**: Never share your API key or include it in code you share publicly. The `.env` file should be added to your `.gitignore` to prevent accidentally committing it to version control.
+
+### Step 5: Run Your First API Request
+
+The module1/post1.py file in the repo contains a sample script to test the Gemini API. Here's what it looks like:
+
+```python
+import os
+from dotenv import load_dotenv
+from google import genai
+
+load_dotenv()  # Load environment variables from .env file
+api_key = os.getenv("GEMINI_API_KEY")
+
+# Initialize the client with the API key
+client = genai.Client(api_key=api_key)
+
+# Send a request to the Gemini 2.5 Flash model
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents="Explain how AI works in a few words"
+)
+
+# Print the response
+print(response.text)
+```
+
+To run it:
+
+1. Ensure you're in the module1 folder and the virtual environment is activated.
+2. Run the script:
+```bash
+python post1.py
+```
+
+The output should be something like: "AI processes data, learns patterns, and makes decisions."
+
+### Optional: Controlling the "Thinking" Feature
+
+The gemini-2.5-flash model uses a "thinking" feature by default, which improves answers but may slow things down. To make it faster (useful for simple apps), you can disable it. Here's an example from post1.py:
+
+```python
+import os
+from dotenv import load_dotenv
+from google import genai
+from google.genai import types
+
+load_dotenv()  # Load environment variables from .env file
+api_key = os.getenv("GEMINI_API_KEY")
+
+# Initialize the client with the API key
+client = genai.Client(api_key=api_key)
+
+# Send a request with thinking disabled
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents="Explain how AI works in a few words",
+    config=types.GenerateContentConfig(
+        thinking_config=types.ThinkingConfig(thinking_budget=0)  # Disables thinking
+    ),
+)
+
+# Print the response
+print(response.text)
+```
+
+Run this the same way (`python post1.py`) to see the result.
+
+## Troubleshooting Tips
+
+- **uv Errors**: Ensure uv is installed (`uv --version`). If uv sync fails, check for a pyproject.toml file in the module1 folder.
+- **API Key Issues**: 
+  - If using `.env` file: Verify the `.env` file exists and contains `GEMINI_API_KEY=your-key`
+  - If using environment variables: Verify the GEMINI_API_KEY is set correctly (`echo $GEMINI_API_KEY` on macOS/Linux or `echo %GEMINI_API_KEY%` on Windows)
+- **python-dotenv Issues**: Ensure python-dotenv is installed (`pip list | grep python-dotenv`)
+- **Python Version**: You need Python 3.9+. Check with `python --version`.
+- **Network Problems**: Ensure you're online, as the API requires internet access.
+- **Repo Issues**: If the repo doesn't clone, confirm you forked it and used the correct URL.
+
+## Next Steps
+
+You're now set up to experiment with prompts using the Gemini API! Try the prompts from the examples above (e.g., text generation, coding) in post1.py by modifying the contents field. Play with zero-shot, few-shot, and role-based prompts to see how the AI responds. In the next post, we'll explore how to write even better prompts with templates and real-world examples. For now, check out the GitHub repo and tweak module1/post1.py to build your first AI app!
