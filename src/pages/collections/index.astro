@@ -40,26 +40,39 @@ try {
         {collections.map(collection => (
           <article class="collection-card">
             <div class="collection-header">
-              <div class="collection-stats">
-                <span class="post-count">{collection.postCount} posts</span>
+              <div class="collection-icon">
+                <!-- Unified icon style (optional placeholder); actual icons can be added via config if needed -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+              </div>
+              <div class="collection-info">
+                <h2 class="collection-name">
+                  <a href={`/collections/${collection.slug}`}>{collection.title}</a>
+                </h2>
+                <p class="collection-description">{collection.description}</p>
+              </div>
+            </div>
+
+            <div class="collection-stats">
+              <div class="stat">
+                <span class="stat-value">{collection.postCount}</span>
+                <span class="stat-label">Posts</span>
               </div>
             </div>
             
-            <h2 class="collection-title">
-              <a href={`/collections/${collection.slug}`}>{collection.title}</a>
-            </h2>
-            
-            <p class="collection-description">{collection.description}</p>
-            
             <div class="collection-tags">
               {collection.tags.map((tag: string) => (
-                <span class="tag">{tag}</span>
+                <span class="collection-tag">{tag}</span>
               ))}
             </div>
             
             <div class="collection-footer">
-              <a href={`/collections/${collection.slug}`} class="collection-link">
-                Let's Build Something →
+              <a href={`/collections/${collection.slug}`} class="start-learning-btn">
+                Start Learning →
               </a>
             </div>
           </article>

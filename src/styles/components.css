@@ -585,9 +585,8 @@
 
 .collections-grid .collection-header {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .collections-grid .collection-stats {
