@@ -2,7 +2,7 @@
 
 .nav-container {
   border-bottom: 2px solid var(--border-color);
-  padding-bottom: 20px;
+  padding-bottom: 12px;
   margin-bottom: var(--section-spacing);
   margin-left: var(--margin-left);
   transition: border-color var(--transition-normal);
@@ -35,7 +35,7 @@
 }
 
 .tagline {
-  font-size: 14px;
+  font-size: 16px;
   font-style: italic;
   color: var(--muted-text-color);
   margin: 0;
@@ -54,7 +54,7 @@
 
 .nav-links {
   display: flex;
-  gap: 25px;
+  gap: 20px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -65,7 +65,7 @@
   font-weight: 500;
   font-size: var(--font-size-base);
   border-bottom: 2px solid transparent;
-  padding: 8px 0;
+  padding: 6px 0;
   transition: all var(--transition-normal);
   display: block;
 }
@@ -172,7 +172,7 @@
   }
 
   .tagline {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .nav-controls {
@@ -218,13 +218,6 @@
 
   .nav-link:last-child {
     border-bottom: none;
-    margin-bottom: 0;
-  }
-
-  .nav-link:hover,
-  .nav-link.active {
-    background: var(--tag-bg-color);
-    border-bottom-color: transparent;
   }
 }
 
