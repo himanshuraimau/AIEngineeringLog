@@ -30,7 +30,7 @@
 }
 
 .hero-text {
-  padding: 40px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,7 +86,7 @@
 }
 
 .hero-placeholder p {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   color: var(--muted-text-color);
   line-height: 1.5;
   margin: 0;
@@ -195,8 +195,8 @@
 
 .post-description {
   color: var(--text-color);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--font-size-base);
+  line-height: 1.6;
   margin: 0 0 15px 0;
 }
 

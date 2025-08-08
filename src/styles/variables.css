@@ -29,20 +29,20 @@
   --code-syntax-function: #8b7355;
   
   /* Spacing */
-  --container-padding: 30px;
+  --container-padding: 20px;
   --container-max-width: 900px;
-  --margin-left: 40px;
+  --margin-left: 24px;
   --section-spacing: 25px;
-  --card-padding: 20px;
+  --card-padding: 16px;
   --border-radius: 3px;
   
   /* Typography */
   --font-family-serif: 'Crimson Text', 'Georgia', serif;
   --font-family-serif-display: 'Times New Roman', serif;
-  --font-size-base: 16px;
-  --font-size-small: 12px;
-  --font-size-large: 18px;
-  --line-height-base: 1.6;
+  --font-size-base: 18px;
+  --font-size-small: 14px;
+  --font-size-large: 20px;
+  --line-height-base: 1.7;
   
   /* Shadows */
   --card-shadow: 2px 2px 5px rgba(212, 184, 150, 0.3);
@@ -89,7 +89,7 @@
 /* Mobile responsive spacing */
 @media (max-width: 768px) {
   :root {
-    --container-padding: 15px;
-    --margin-left: 20px;
+    --container-padding: 12px;
+    --margin-left: 15px;
   }
 } 
