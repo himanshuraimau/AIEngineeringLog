@@ -35,22 +35,27 @@ Here's how good and bad prompts compare for common tasks. These examples show wh
 ### Text Generation
 
 **Bad Prompt**: "Tell me about animals."
+
 - **Problem**: Too vague. The AI might write about anything from pets to dinosaurs!
 - **Example Output**: "Animals are cool." (Not helpful)
 
 **Good Prompt**: "Write a 50-word description of a lion's habitat in the African savanna."
+
 - **Why It Works**: Specifies the animal, word count, and location.
 - **Example Output**: "Lions live in the African savanna, a vast grassland with scattered trees. Their habitat supports herds of prey like zebras and antelopes. Lions rest in shaded areas during the day and hunt at dusk, thriving in warm, dry climates with access to water sources like rivers."
 
 ### Coding
 
 **Bad Prompt**: "Write some code."
+
 - **Problem**: No language or task specified. You might get random code that's useless.
 - **Example Output**: A generic "Hello, World!" script.
 
 **Good Prompt**: "Write a Python function to find the square of a number."
+
 - **Why It Works**: Specifies the language (Python) and task (square of a number).
 - **Example Output**:
+
 ```python
 def square(num):
     return num * num
@@ -61,10 +66,12 @@ print(square(5))  # Output: 25
 ### Summarization
 
 **Bad Prompt**: "Summarize this."
+
 - **Problem**: No document or details provided. The AI can't guess what to summarize.
 - **Example Output**: "Please provide the text to summarize."
 
 **Good Prompt**: "Summarize a 500-word article about renewable energy in 50 words, focusing on solar power benefits."
+
 - **Why It Works**: Specifies the topic, word count, and focus (solar power).
 - **Example Output**: "Solar power, a renewable energy source, reduces carbon emissions and energy costs. It harnesses sunlight through panels, providing clean electricity. Benefits include sustainability, low maintenance, and accessibility in remote areas, making it a key solution for combating climate change and promoting energy independence."
 
@@ -88,6 +95,7 @@ To make prompts even better, you can use these beginner-friendly techniques:
 **Output**: "The capital of France is Paris."
 
 **When to Use**: Simple tasks where the AI already knows the answer.
+
 - **Pros**: Quick and easy.
 - **Cons**: May not work for complex or specific tasks.
 
@@ -96,6 +104,7 @@ To make prompts even better, you can use these beginner-friendly techniques:
 **What It Is**: Giving a few examples to show the AI what you want.
 
 **Example**:
+
 ```
 Input: "small" -> Output: "tiny"
 Input: "fast" -> Output: "quick"
@@ -105,6 +114,7 @@ Input: "tall" -> Output: ?
 **Output**: "high"
 
 **When to Use**: When you need the AI to follow a pattern, like synonyms or translations.
+
 - **Pros**: Helps the AI understand specific formats.
 - **Cons**: Takes a bit more effort to write examples.
 
@@ -116,12 +126,13 @@ Input: "tall" -> Output: ?
 **Output**: "Gravity is a force that pulls objects toward each other, like how the Earth pulls you down so you don't float away. It's why apples fall from trees!"
 
 **When to Use**: When you want a specific tone or expertise.
+
 - **Pros**: Makes answers more tailored and engaging.
 - **Cons**: You might need to tweak the role for the best results.
 
 ## Setting Up Your Project with uv and Google Gemini API (Free)
 
-To start building AI apps with prompts, we'll use the free Google Gemini API and set up a project using uv, a fast and simple tool for managing Python projects. This guide is beginner-friendly, assuming you have basic knowledge of Python and a computer with internet access. All code for this post is available in the GitHub repository: https://github.com/AI-Brewery/aienglog-codes, in the module1/post1.py file.
+To start building AI apps with prompts, we'll use the free Google Gemini API and set up a project using uv, a fast and simple tool for managing Python projects. This guide is beginner-friendly, assuming you have basic knowledge of Python and a computer with internet access. All code for this post is available in the GitHub repository: <a href="https://github.com/AI-Brewery/aienglog-codes" target="_blank" rel="noopener noreferrer">https://github.com/AI-Brewery/aienglog-codes</a>, in the module1/post1.py file.
 
 ### Step 1: Install uv
 
@@ -129,16 +140,19 @@ uv is a tool that makes setting up Python projects easy by managing dependencies
 
 1. Go to https://docs.astral.sh/uv/ and follow the installation instructions for your system (Windows, macOS, or Linux).
 2. For example, on macOS/Linux, run:
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 3. On Windows, use PowerShell:
+
 ```powershell
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 4. Verify uv is installed by running:
+
 ```bash
 uv --version
 ```
@@ -150,11 +164,15 @@ The code for this post is in the module1/post1.py file in the AI-Brewery/aienglo
 1. Go to the repository: https://github.com/AI-Brewery/aienglog-codes.
 2. Click the Fork button (top-right) to create your own copy of the repo on GitHub.
 3. Clone your forked repo to your computer:
+
 ```bash
 git clone https://github.com/YOUR-USERNAME/aienglog-codes.git
 ```
-   Replace YOUR-USERNAME with your GitHub username.
+
+Replace YOUR-USERNAME with your GitHub username.
+
 4. Navigate to the module1 folder:
+
 ```bash
 cd aienglog-codes/module1
 ```
@@ -164,22 +182,25 @@ cd aienglog-codes/module1
 Inside the module1 folder, use uv to set up the project and install dependencies (like the google-genai package):
 
 1. Run:
+
 ```bash
 uv sync
 ```
 
-   This creates a virtual environment and installs all dependencies listed in the pyproject.toml file (included in the repo).
+This creates a virtual environment and installs all dependencies listed in the pyproject.toml file (included in the repo).
 
 2. Activate the virtual environment:
+
    - On macOS/Linux: `source .venv/bin/activate`
    - On Windows: `.venv\Scripts\activate`
 
 3. Verify the google-genai package is installed:
+
 ```bash
-pip list
+uv pip list
 ```
 
-   Look for google-genai in the list.
+Look for google-genai in the list.
 
 ### Step 4: Get Your Gemini API Key and Set Up Environment Variables
 
@@ -200,6 +221,7 @@ touch .env
 ```
 
 Add your API key to the `.env` file:
+
 ```bash
 echo "GEMINI_API_KEY=your-api-key-here" >> .env
 ```
@@ -209,10 +231,13 @@ Replace `your-api-key-here` with the key you copied.
 #### Option 2: Setting Environment Variables Directly
 
 - On macOS/Linux:
+
 ```bash
 export GEMINI_API_KEY=your-api-key-here
 ```
+
 - On Windows:
+
 ```cmd
 set GEMINI_API_KEY=your-api-key-here
 ```
@@ -248,6 +273,7 @@ To run it:
 
 1. Ensure you're in the module1 folder and the virtual environment is activated.
 2. Run the script:
+
 ```bash
 python post1.py
 ```
@@ -288,7 +314,7 @@ Run this the same way (`python post1.py`) to see the result.
 ## Troubleshooting Tips
 
 - **uv Errors**: Ensure uv is installed (`uv --version`). If uv sync fails, check for a pyproject.toml file in the module1 folder.
-- **API Key Issues**: 
+- **API Key Issues**:
   - If using `.env` file: Verify the `.env` file exists and contains `GEMINI_API_KEY=your-key`
   - If using environment variables: Verify the GEMINI_API_KEY is set correctly (`echo $GEMINI_API_KEY` on macOS/Linux or `echo %GEMINI_API_KEY%` on Windows)
 - **python-dotenv Issues**: Ensure python-dotenv is installed (`pip list | grep python-dotenv`)

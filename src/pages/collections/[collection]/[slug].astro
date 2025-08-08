@@ -7,6 +7,7 @@ import {
   getCollectionConfig,
   CollectionError,
 } from "../../../utils/collections.js";
+import { components as MDXComponents } from "../../../components/MDXComponents.tsx";
 
 // Type definitions for post data structure
 interface PostData {
@@ -112,14 +113,15 @@ try {
 
   try {
     // Get all posts in this collection for navigation
-    allPosts = await getCollection(collection as any) as Post[];
+    allPosts = (await getCollection(collection as any)) as Post[];
     posts = allPosts
       .filter((p: Post) => p.id !== "index")
       .sort((a: Post, b: Post) => a.data.order - b.data.order);
 
     const currentIndex = posts.findIndex((p: Post) => p.id === post.id);
-    prevPost = currentIndex > 0 ? (posts[currentIndex - 1] || null) : null;
-    nextPost = currentIndex < posts.length - 1 ? (posts[currentIndex + 1] || null) : null;
+    prevPost = currentIndex > 0 ? posts[currentIndex - 1] || null : null;
+    nextPost =
+      currentIndex < posts.length - 1 ? posts[currentIndex + 1] || null : null;
   } catch (error) {
     console.warn(
       `Failed to load navigation posts for collection '${collection}':`,
@@ -244,12 +246,38 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
       }
 
       <article class="post-content-section">
-        <Content />
+        <Content components={MDXComponents} />
       </article>
 
       <!-- Initialize code blocks with copy functionality -->
       <script>
-        import '../../../scripts/codeBlocks.js';
+        import "../../../scripts/codeBlocks.js";
+      </script>
+
+      <!-- Ensure external links in post content open in a new tab -->
+      <script is:inline>
+        (function () {
+          try {
+            const root = document.querySelector(".post-content-section");
+            if (!root) return;
+            const anchors = root.querySelectorAll("a[href]");
+            anchors.forEach((anchor) => {
+              try {
+                const href = anchor.getAttribute("href");
+                if (!href) return;
+                const url = new URL(href, window.location.href);
+                if (url.origin !== window.location.origin) {
+                  anchor.setAttribute("target", "_blank");
+                  anchor.setAttribute("rel", "noopener noreferrer");
+                }
+              } catch (e) {
+                // ignore invalid URLs
+              }
+            });
+          } catch (e) {
+            // no-op
+          }
+        })();
       </script>
 
       {
