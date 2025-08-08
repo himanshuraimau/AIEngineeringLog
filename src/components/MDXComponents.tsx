@@ -16,4 +16,17 @@ export const components = {
       </CodeBlock>
     );
   },
+  a: ({ href, children, ...rest }: any) => {
+    const isExternal = typeof href === 'string' && /^(https?:)?\/\//.test(href);
+    return (
+      <a
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        {...rest}
+      >
+        {children}
+      </a>
+    );
+  },
 };
