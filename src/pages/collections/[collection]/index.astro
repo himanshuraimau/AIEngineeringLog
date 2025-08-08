@@ -1,21 +1,29 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import Navigation from '../../../components/home/Navigation.tsx';
-import { getCollection, render } from 'astro:content';
-import { getCollectionStaticPaths, getCollectionConfig, CollectionError } from '../../../utils/collections.js';
+import Layout from "../../../layouts/Layout.astro";
+import Navigation from "../../../components/home/Navigation.tsx";
+import { getCollection, render } from "astro:content";
+import {
+  getCollectionStaticPaths,
+  getCollectionConfig,
+  CollectionError,
+} from "../../../utils/collections.js";
+import { components as MDXComponents } from "../../../components/MDXComponents.tsx";
 
 export async function getStaticPaths() {
   try {
     return getCollectionStaticPaths();
   } catch (error) {
-    console.error('Failed to generate static paths for collection pages:', error);
+    console.error(
+      "Failed to generate static paths for collection pages:",
+      error
+    );
     throw error;
   }
 }
 
 const { collection } = Astro.params;
 
-if (!collection || typeof collection !== 'string') {
+if (!collection || typeof collection !== "string") {
   throw new Error(`Invalid collection parameter: ${collection}`);
 }
 
@@ -28,16 +36,16 @@ let errorMessage: string | null = null;
 try {
   // Get collection metadata from central configuration
   collectionMeta = getCollectionConfig(collection);
-  
+
   try {
     // Get all posts for this collection
     allPosts = await getCollection(collection as any);
     posts = allPosts
-      .filter((post: any) => post.id !== 'index')
+      .filter((post: any) => post.id !== "index")
       .sort((a: any, b: any) => a.data.order - b.data.order);
 
     // Get collection metadata
-    const collectionIndex = allPosts.find((post: any) => post.id === 'index');
+    const collectionIndex = allPosts.find((post: any) => post.id === "index");
 
     // Render collection index content if it exists
     if (collectionIndex) {
@@ -45,7 +53,10 @@ try {
         const { Content } = await render(collectionIndex as any);
         CollectionIndexContent = Content;
       } catch (error) {
-        console.warn(`Failed to render collection index for '${collection}':`, error);
+        console.warn(
+          `Failed to render collection index for '${collection}':`,
+          error
+        );
         // Continue without index content
       }
     }
@@ -61,15 +72,17 @@ try {
     console.error(`Unexpected error for collection '${collection}':`, error);
     errorMessage = `An unexpected error occurred while loading collection '${collection}'`;
   }
-  
+
   // Use fallback metadata
   collectionMeta = {
-    title: collection.charAt(0).toUpperCase() + collection.slice(1).replace(/-/g, ' '),
+    title:
+      collection.charAt(0).toUpperCase() +
+      collection.slice(1).replace(/-/g, " "),
     slug: collection,
     description: `Content collection: ${collection}`,
-    category: 'Unknown',
-    color: '#666666',
-    tags: [collection]
+    category: "Unknown",
+    color: "#666666",
+    tags: [collection],
   };
 }
 
@@ -80,100 +93,124 @@ const pageDescription = collectionMeta.description;
 <Layout title={pageTitle} description={pageDescription}>
   <div class="page-container">
     <Navigation client:load currentPath="/collections" />
-    
+
     <main class="main-content">
       <header class="collection-landing-header">
         <div class="collection-breadcrumb">
           <a href="/collections">Collections</a> → {collectionMeta.title}
         </div>
-        
+
         <div class="collection-landing-meta">
-          <span class="collection-category" style={`color: ${collectionMeta.color}`}>
+          <span
+            class="collection-category"
+            style={`color: ${collectionMeta.color}`}
+          >
             {collectionMeta.category}
           </span>
           <span class="collection-post-count">{posts.length} posts</span>
         </div>
-        
+
         <h1 class="collection-landing-title">{collectionMeta.title}</h1>
-        <p class="collection-landing-description">{collectionMeta.description}</p>
-        
-        {errorMessage && (
-          <div class="error-message" style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
-            <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
-          </div>
-        )}
+        <p class="collection-landing-description">
+          {collectionMeta.description}
+        </p>
+
+        {
+          errorMessage && (
+            <div
+              class="error-message"
+              style="background: #fee; border: 1px solid #fcc; padding: 1rem; border-radius: 4px; margin-top: 1rem;"
+            >
+              <p style="color: #c33; margin: 0;">⚠️ {errorMessage}</p>
+            </div>
+          )
+        }
       </header>
 
-      {CollectionIndexContent && (
-        <section class="collection-overview">
-          <div class="collection-overview-content">
-            <CollectionIndexContent />
-          </div>
-        </section>
-      )}
+      {
+        CollectionIndexContent && (
+          <section class="collection-overview">
+            <div class="collection-overview-content">
+              <CollectionIndexContent components={MDXComponents} />
+            </div>
+          </section>
+        )
+      }
 
       <section class="collection-posts">
         <h2 class="section-title">Learning Path</h2>
         <div class="posts-list">
-          {posts.map((post: any, index: number) => (
-            <article class="post-item">
-              <div class="post-number">
-                <span>{String(post.data.order).padStart(2, '0')}</span>
-              </div>
-              
-              <div class="post-content">
-                <div class="post-header">
-                  <h3 class="post-title">
-                    <a href={`/collections/${collection}/${post.id}`}>
-                      {post.data.title}
-                    </a>
-                  </h3>
-                  <div class="post-meta">
-                    <span class="read-time">{post.data.readTime}</span>
-                    <span class="publish-date">
-                      {post.data.publishDate.toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'short', 
-                        day: 'numeric' 
-                      })}
-                    </span>
+          {
+            posts.map((post: any, index: number) => (
+              <article class="post-item">
+                <div class="post-number">
+                  <span>{String(post.data.order).padStart(2, "0")}</span>
+                </div>
+
+                <div class="post-content">
+                  <div class="post-header">
+                    <h3 class="post-title">
+                      <a href={`/collections/${collection}/${post.slug}`}>
+                        {post.data.title}
+                      </a>
+                    </h3>
+                    <div class="post-meta">
+                      <span class="read-time">{post.data.readTime}</span>
+                      <span class="publish-date">
+                        {post.data.publishDate.toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p class="post-description">{post.data.description}</p>
+
+                  <div class="post-tags">
+                    {post.data.tags.slice(0, 3).map((tag: string) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+
+                  {post.data.prerequisites &&
+                    post.data.prerequisites.length > 0 && (
+                      <div class="post-prerequisites">
+                        <span class="prereq-label">Prerequisites:</span>
+                        {post.data.prerequisites.map((prereq: string) => {
+                          const prereqPost = posts.find(
+                            (p: any) => p.slug === prereq
+                          );
+                          return prereqPost ? (
+                            <a
+                              href={`/collections/${collection}/${prereq}`}
+                              class="prereq-link"
+                            >
+                              {(prereqPost as any).data.title}
+                            </a>
+                          ) : (
+                            <span class="prereq-text">{prereq}</span>
+                          );
+                        })}
+                      </div>
+                    )}
+                </div>
+
+                <div class="post-progress">
+                  <div class="progress-indicator">
+                    {index === 0
+                      ? "🚀"
+                      : index < 3
+                        ? "📚"
+                        : index < 6
+                          ? "🛠️"
+                          : "🚀"}
                   </div>
                 </div>
-                
-                <p class="post-description">{post.data.description}</p>
-                
-                <div class="post-tags">
-                  {post.data.tags.slice(0, 3).map((tag: string) => (
-                    <span class="tag">{tag}</span>
-                  ))}
-                </div>
-                
-                {post.data.prerequisites && post.data.prerequisites.length > 0 && (
-                  <div class="post-prerequisites">
-                    <span class="prereq-label">Prerequisites:</span>
-                    {post.data.prerequisites.map((prereq: string) => {
-                      const prereqPost = posts.find((p: any) => p.id === prereq);
-                      return prereqPost ? (
-                        <a href={`/collections/${collection}/${prereq}`} class="prereq-link">
-                          {(prereqPost as any).data.title}
-                        </a>
-                      ) : (
-                        <span class="prereq-text">{prereq}</span>
-                      );
-                    })}
-                  </div>
-                )}
-                
-                
-              </div>
-              
-              <div class="post-progress">
-                <div class="progress-indicator">
-                  {index === 0 ? '🚀' : index < 3 ? '📚' : index < 6 ? '🛠️' : '🚀'}
-                </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            ))
+          }
         </div>
       </section>
 
@@ -182,19 +219,27 @@ const pageDescription = collectionMeta.description;
           <a href="/collections" class="nav-button secondary">
             ← All Collections
           </a>
-          {posts.length > 0 && (
-            <a href={`/collections/${collection}/${(posts[0] as any).id}`} class="nav-button primary">
-              Start Learning →
-            </a>
-          )}
+          {
+            posts.length > 0 && (
+              <a
+                href={`/collections/${collection}/${(posts[0] as any).slug}`}
+                class="nav-button primary"
+              >
+                Start Learning →
+              </a>
+            )
+          }
         </div>
       </section>
     </main>
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2025 AIEngineeringLog. Made by students, for students. Still figuring it out together. ✨</p>
+        <p>
+          &copy; 2025 AIEngineeringLog. Made by students, for students. Still
+          figuring it out together. ✨
+        </p>
       </div>
     </footer>
   </div>
-</Layout> 
+</Layout>
