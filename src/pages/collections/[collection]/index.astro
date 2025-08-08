@@ -150,7 +150,7 @@ const pageDescription = collectionMeta.description;
                 <div class="post-content">
                   <div class="post-header">
                     <h3 class="post-title">
-                      <a href={`/collections/${collection}/${post.id}`}>
+                      <a href={`/collections/${collection}/${post.slug}`}>
                         {post.data.title}
                       </a>
                     </h3>
@@ -180,7 +180,7 @@ const pageDescription = collectionMeta.description;
                         <span class="prereq-label">Prerequisites:</span>
                         {post.data.prerequisites.map((prereq: string) => {
                           const prereqPost = posts.find(
-                            (p: any) => p.id === prereq
+                            (p: any) => p.slug === prereq
                           );
                           return prereqPost ? (
                             <a
@@ -222,7 +222,7 @@ const pageDescription = collectionMeta.description;
           {
             posts.length > 0 && (
               <a
-                href={`/collections/${collection}/${(posts[0] as any).id}`}
+                href={`/collections/${collection}/${(posts[0] as any).slug}`}
                 class="nav-button primary"
               >
                 Start Learning →
@@ -243,4 +243,3 @@ const pageDescription = collectionMeta.description;
     </footer>
   </div>
 </Layout>
-

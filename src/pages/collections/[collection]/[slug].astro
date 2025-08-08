@@ -62,7 +62,7 @@ export async function getStaticPaths() {
         for (const post of filteredPosts) {
           const typedPost = post as Post;
           paths.push({
-            params: { collection, slug: typedPost.id },
+            params: { collection, slug: (typedPost as any).slug },
             props: { post: typedPost, collection },
           });
         }
@@ -336,7 +336,7 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
           {
             prevPost ? (
               <a
-                href={`/collections/${collection}/${prevPost.id}`}
+                href={`/collections/${collection}/${(prevPost as any).slug}`}
                 class="nav-link prev"
               >
                 <span class="nav-direction">← Previous</span>
@@ -355,7 +355,7 @@ const pageTitle = `${post.data.title} - ${collectionConfig.title}`;
           {
             nextPost ? (
               <a
-                href={`/collections/${collection}/${nextPost.id}`}
+                href={`/collections/${collection}/${(nextPost as any).slug}`}
                 class="nav-link next"
               >
                 <span class="nav-direction">Next →</span>
