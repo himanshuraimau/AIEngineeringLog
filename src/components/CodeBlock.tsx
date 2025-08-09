@@ -10,11 +10,40 @@ export default function CodeBlock({ children, className, 'data-language': langua
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async () => {
-    const code = extractTextFromChildren(children);
+    const code = extractTextFromChildren(children).trim();
+    const fallbackCopy = (text: string): boolean => {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '0';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return successful;
+      } catch {
+        return false;
+      }
+    };
+
     try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      }
+      const ok = fallbackCopy(code);
+      if (ok) {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        throw new Error('Clipboard API not available and fallback failed');
+      }
     } catch (err) {
       console.error('Failed to copy code: ', err);
     }

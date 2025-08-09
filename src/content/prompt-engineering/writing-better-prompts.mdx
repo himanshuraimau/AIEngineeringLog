@@ -20,6 +20,8 @@ authorProfile:
   linkedin: "https://www.linkedin.com/in/praveen-m-71816b2a1/"
 ---
 
+import TemplateGrid, { TemplateCard } from "../../components/TemplateGrid.tsx";
+
 # Writing Better Prompts - Templates, Roles, and Real Examples
 
 You've learned the basics of prompt engineering. Now it's time to level up. The difference between good and great prompts isn't just clarity—it's structure, roles, and templates that transform your interactions with AI from hit-or-miss to consistently brilliant.
@@ -92,69 +94,32 @@ Use this formula for expert roles:
 > _"You are a [SPECIFIC TITLE] with [YEARS] years of experience in [DOMAIN].
 > You specialize in [SPECIALTY] and are known for [UNIQUE APPROACH/STRENGTH]."_
 
-### Role Examples That Work
-
-#### The Technical Mentor
-
-#### Role Setup for Code Review
+#### Let's see an example for role Code Reviewer to understand what we actually meant...
 
 ```python
+# Role Setup
 role = """
-You are a senior software engineer with 8 years of experience in Python development.
-You specialize in clean code practices and are known for giving constructive,
-actionable feedback that helps junior developers improve quickly.
+You are a senior Python developer with 5 years of experience in code reviews.
+You focus on clean, readable code and practical improvements.
 """
 
-# Combined with task
-prompt = f"""
-{role}
+# Task
+task = """
+Review this function and suggest 3 specific improvements:
 
-Review this Python function and provide specific improvements:
+def process_users(users):
+    result = []
+    for u in users:
+        if u['status'] == 'active' and u['age'] > 18:
+            result.append({'name': u['name'], 'email': u['email']})
+    return result
 
-python
-def calc_total(items):
-    total = 0
-    for i in items:
-        if i['active']:
-            total = total + i['price'] * i['quantity']
-    return total
-
-Focus on:
-
-Code readability
-Performance considerations
-Error handling
-Python best practices
-
-Format your feedback as numbered suggestions with code examples.
+Format as: 1. Issue, 2. Solution, 3. Code example
 """
+
+# Combined prompt
+prompt = f"{role}\n\n{task}"
 ```
-
-#### The Creative Director
-
-You are a creative director at a top advertising agency with 12 years of experience in brand storytelling. You specialize in campaigns that connect emotionally with millennials and Gen Z audiences.
-
-Create 3 social media campaign concepts for a plant-based protein startup targeting fitness enthusiasts aged 25-35. Each concept should include:
-
-- **Core message** (one sentence)
-- **Visual style** description
-- **Three sample post ideas**
-- **Hashtag strategy**
-
-#### The Data Analyst
-
-You are a senior data analyst with expertise in e-commerce analytics. You excel at finding actionable insights in complex datasets and explaining them clearly to non-technical stakeholders.
-
-Analyze this sales data and provide insights:
-[Your data here]
-
-Focus on:
-
-- Top 3 trends that impact revenue
-- Seasonal patterns worth noting
-- Recommendations for the next quarter
-
-Present findings as if briefing the CEO
 
 ---
 
@@ -162,59 +127,44 @@ Present findings as if briefing the CEO
 
 Here are battle-tested templates you can use immediately:
 
-### 1) Problem–Solution Template
+<TemplateGrid>
+  <TemplateCard title="Problem–Solution Template">
+    You are a [EXPERT_TYPE] helping solve [PROBLEM_DOMAIN] challenges.
 
-You are a [EXPERT_TYPE] helping solve [PROBLEM_DOMAIN] challenges.
+    **Problem:** [SPECIFIC_ISSUE]
+    **Constraints:** [LIMITATIONS]
+    **Goal:** [DESIRED_OUTCOME]
 
-Problem: [SPECIFIC_ISSUE]  
-Constraints: [LIMITATIONS]  
-Goal: [DESIRED_OUTCOME]
+    **Provide:**
+    - Root cause analysis (2-3 key factors)
+    - Solution options (rank by feasibility)
+    - Implementation roadmap
+    - Success metrics
 
-Provide:
+    Format as executive summary with bullet points.
 
-- Root cause analysis (2-3 key factors)
-- Solution options (rank by feasibility)
-- Implementation roadmap
-- Success metrics
+  </TemplateCard>
 
-Format as executive summary with bullet points.
+  <TemplateCard title="Step-by-Step Guide Template">
+    You are an experienced [DOMAIN] instructor known for clear, actionable tutorials.
 
-### 2) Comparison Analysis Template
+    Create a beginner-friendly guide for: **[TOPIC]**
 
-Act as an objective analyst comparing [ITEMS_TO_COMPARE].
+    **Structure:**
+    - Prerequisites (what they need first)
+    - Materials/tools required
+    - Steps (numbered, with explanations)
+    - Common mistakes to avoid
+    - Next steps for continued learning
 
-Evaluation criteria:
+    **Target audience:** [DESCRIBE_AUDIENCE]
+    **Tone:** Encouraging but practical
+    **Length:** [WORD_COUNT]
 
-- [CRITERION_1]
-- [CRITERION_2]
-- [CRITERION_3]
+  </TemplateCard>
+</TemplateGrid>
 
-For each item, provide:
-
-- Strengths (top 3)
-- Weaknesses (top 3)
-- Best use case
-- Score out of 10
-
-Present as comparison table with final recommendations.
-
-### 3) Step-by-Step Guide Template
-
-You are an experienced [DOMAIN] instructor known for clear, actionable tutorials.
-
-Create a beginner-friendly guide for: [TOPIC]
-
-Structure:
-
-- Prerequisites (what they need first)
-- Materials/tools required
-- Steps (numbered, with explanations)
-- Common mistakes to avoid
-- Next steps for continued learning
-
-Target audience: [DESCRIBE_AUDIENCE]  
-Tone: Encouraging but practical  
-Length: [WORD_COUNT]
+For more such templates, visit https://medium.com/@praveenmudalgeri05/prompt-engineering-template-library-bafb0b9261bb
 
 ---
 
