@@ -3,7 +3,7 @@ title: "Writing Better Prompts - Templates, Roles, and Real Examples"
 description: "Master advanced prompt engineering techniques with structured templates, role-based prompting, and real-world examples using Google Gemini"
 collection: "prompt-engineering"
 order: 2
-author: "praveen"
+author: "Praveen"
 publishDate: 2025-08-08
 readTime: "15 min read"
 tags:
@@ -17,8 +17,10 @@ tags:
   ]
 prerequisites: ["prompt-engineering-101"]
 authorProfile:
-  linkedin: "https://www.linkedin.com/in/praveen-m-71816b2a1/"
+  github: "https://github.com/PraveenMudalgeri"
 ---
+
+import TemplateGrid, { TemplateCard } from "../../components/TemplateGrid.tsx";
 
 # Writing Better Prompts - Templates, Roles, and Real Examples
 
@@ -92,69 +94,32 @@ Use this formula for expert roles:
 > _"You are a [SPECIFIC TITLE] with [YEARS] years of experience in [DOMAIN].
 > You specialize in [SPECIALTY] and are known for [UNIQUE APPROACH/STRENGTH]."_
 
-### Role Examples That Work
-
-#### The Technical Mentor
-
-#### Role Setup for Code Review
+#### Let's see an example for role Code Reviewer to understand what we actually meant...
 
 ```python
+# Role Setup
 role = """
-You are a senior software engineer with 8 years of experience in Python development.
-You specialize in clean code practices and are known for giving constructive,
-actionable feedback that helps junior developers improve quickly.
+You are a senior Python developer with 5 years of experience in code reviews.
+You focus on clean, readable code and practical improvements.
 """
 
-# Combined with task
-prompt = f"""
-{role}
+# Task
+task = """
+Review this function and suggest 3 specific improvements:
 
-Review this Python function and provide specific improvements:
+def process_users(users):
+    result = []
+    for u in users:
+        if u['status'] == 'active' and u['age'] > 18:
+            result.append({'name': u['name'], 'email': u['email']})
+    return result
 
-python
-def calc_total(items):
-    total = 0
-    for i in items:
-        if i['active']:
-            total = total + i['price'] * i['quantity']
-    return total
-
-Focus on:
-
-Code readability
-Performance considerations
-Error handling
-Python best practices
-
-Format your feedback as numbered suggestions with code examples.
+Format as: 1. Issue, 2. Solution, 3. Code example
 """
+
+# Combined prompt
+prompt = f"{role}\n\n{task}"
 ```
-
-#### The Creative Director
-
-You are a creative director at a top advertising agency with 12 years of experience in brand storytelling. You specialize in campaigns that connect emotionally with millennials and Gen Z audiences.
-
-Create 3 social media campaign concepts for a plant-based protein startup targeting fitness enthusiasts aged 25-35. Each concept should include:
-
-- **Core message** (one sentence)
-- **Visual style** description
-- **Three sample post ideas**
-- **Hashtag strategy**
-
-#### The Data Analyst
-
-You are a senior data analyst with expertise in e-commerce analytics. You excel at finding actionable insights in complex datasets and explaining them clearly to non-technical stakeholders.
-
-Analyze this sales data and provide insights:
-[Your data here]
-
-Focus on:
-
-- Top 3 trends that impact revenue
-- Seasonal patterns worth noting
-- Recommendations for the next quarter
-
-Present findings as if briefing the CEO
 
 ---
 
@@ -162,59 +127,44 @@ Present findings as if briefing the CEO
 
 Here are battle-tested templates you can use immediately:
 
-### 1) Problem–Solution Template
+<TemplateGrid>
+  <TemplateCard title="Problem–Solution Template">
+    You are a [EXPERT_TYPE] helping solve [PROBLEM_DOMAIN] challenges.
 
-You are a [EXPERT_TYPE] helping solve [PROBLEM_DOMAIN] challenges.
+    **Problem:** [SPECIFIC_ISSUE]
+    **Constraints:** [LIMITATIONS]
+    **Goal:** [DESIRED_OUTCOME]
 
-Problem: [SPECIFIC_ISSUE]  
-Constraints: [LIMITATIONS]  
-Goal: [DESIRED_OUTCOME]
+    **Provide:**
+    - Root cause analysis (2-3 key factors)
+    - Solution options (rank by feasibility)
+    - Implementation roadmap
+    - Success metrics
 
-Provide:
+    Format as executive summary with bullet points.
 
-- Root cause analysis (2-3 key factors)
-- Solution options (rank by feasibility)
-- Implementation roadmap
-- Success metrics
+  </TemplateCard>
 
-Format as executive summary with bullet points.
+  <TemplateCard title="Step-by-Step Guide Template">
+    You are an experienced [DOMAIN] instructor known for clear, actionable tutorials.
 
-### 2) Comparison Analysis Template
+    Create a beginner-friendly guide for: **[TOPIC]**
 
-Act as an objective analyst comparing [ITEMS_TO_COMPARE].
+    **Structure:**
+    - Prerequisites (what they need first)
+    - Materials/tools required
+    - Steps (numbered, with explanations)
+    - Common mistakes to avoid
+    - Next steps for continued learning
 
-Evaluation criteria:
+    **Target audience:** [DESCRIBE_AUDIENCE]
+    **Tone:** Encouraging but practical
+    **Length:** [WORD_COUNT]
 
-- [CRITERION_1]
-- [CRITERION_2]
-- [CRITERION_3]
+  </TemplateCard>
+</TemplateGrid>
 
-For each item, provide:
-
-- Strengths (top 3)
-- Weaknesses (top 3)
-- Best use case
-- Score out of 10
-
-Present as comparison table with final recommendations.
-
-### 3) Step-by-Step Guide Template
-
-You are an experienced [DOMAIN] instructor known for clear, actionable tutorials.
-
-Create a beginner-friendly guide for: [TOPIC]
-
-Structure:
-
-- Prerequisites (what they need first)
-- Materials/tools required
-- Steps (numbered, with explanations)
-- Common mistakes to avoid
-- Next steps for continued learning
-
-Target audience: [DESCRIBE_AUDIENCE]  
-Tone: Encouraging but practical  
-Length: [WORD_COUNT]
+For more such templates, visit https://medium.com/@praveenmudalgeri05/prompt-engineering-template-library-bafb0b9261bb
 
 ---
 
@@ -222,123 +172,70 @@ Length: [WORD_COUNT]
 
 > Pro tip: Start with the simplest approach that works. Add advanced techniques when you need more structure, consistency, or reasoning.
 
-### Chain of Thought Prompting
-
-Get AI to show its work for complex reasoning:
-
-You are a business strategist analyzing market entry opportunities.
-
-Think through this step-by-step:
-
-- First, analyze the market size and growth trends
-- Then, identify key competitors and their positioning
-- Next, evaluate barriers to entry
-- Finally, recommend the best approach
-
-Market: Sustainable packaging for food delivery  
-Company: Small startup with $500K funding
-
-Show your reasoning for each step before providing the final recommendation.
-
-### Multi‑Perspective Prompting
-
-Get richer insights by asking for multiple viewpoints:
-
-Analyze this business decision from three perspectives:
-
-Decision: Should we build our own delivery platform or partner with existing services?
-
-Perspectives:
-
-- CFO (focus: costs, ROI, financial risk)
-- CTO (focus: technical feasibility, maintenance, scalability)
-- Marketing Director (focus: brand control, customer experience, market positioning)
-
-For each perspective, provide:
-
-- Key concerns
-- Recommended approach
-- Deal-breakers
-
-Then synthesize into a balanced recommendation.
-
-### Constraint‑Based Prompting
-
-Use limitations to drive creativity:
-
-You are a creative problem-solver who thrives within constraints.
-
-Challenge: Design a team-building activity  
-Constraints:
-
-- Remote team (video call only)
-- 30 minutes maximum
-- No budget for tools/software
-- Mix of introverts and extroverts
-- Team of 8 people
-
-Create 3 activity options that work within ALL constraints.  
-For each option, include setup instructions and facilitation tips.
+![Advanced Techniques for Prompting](/assets/advanced_techniques.png)
 
 ## Setting Up Advanced Prompting with Gemini
 
-Let's build a practical example using our templates with the Google Gemini API. All code is available in the GitHub repository: https://github.com/AI-Brewery/aienglog-codes.git, in the module1/post2.py file.
+Let's build a practical example using one of our templates with the Google Gemini API. For the remaining codes visit the GitHub repository: https://github.com/AI-Brewery/aienglog-codes.git, and look for module1/post2.py file.
 
 ### Advanced Prompt Manager Class
 
 ```python
-import os
-from dotenv import load_dotenv
-from google import genai
-from google.genai import types
+import os  # For accessing environment variables like API keys
+from dotenv import load_dotenv  # To load variables from a .env file into the environment
+from google import genai  # Google's Gemini AI SDK for interacting with the API
+from google.genai import types  # For request/response configuration and type definitions
 
-load_dotenv()
+load_dotenv()  # Load environment variables from .env so they can be used in the program
 
 class AdvancedPromptManager:
-    def init(self):
+    def __init__(self):
+        # Initialize the Google Generative AI client
         api_key = os.getenv("GEMINI_API_KEY")
         self.client = genai.Client(api_key=api_key)
 
     def expert_prompt(self, role, task, context="", format_instructions="", thinking=False):
         """
-        Create structured prompts using the four-part template
+        Create structured prompts using a four-part template:
+        Role, Task, Context, and Format Instructions.
         """
         prompt_parts = []
 
         if role:
             prompt_parts.append(f"[ROLE] {role}")
-
         if task:
             prompt_parts.append(f"[TASK] {task}")
-
         if context:
             prompt_parts.append(f"[CONTEXT] {context}")
-
         if format_instructions:
             prompt_parts.append(f"[FORMAT] {format_instructions}")
 
+        # Combine prompt parts with spacing
         full_prompt = "\n\n".join(prompt_parts)
 
+        # Configure the model, optionally enabling 'thinking'
         config = types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(
                 thinking_budget=0 if not thinking else None
             )
         )
 
+        # Generate response from Gemini model
         response = self.client.models.generate_content(
             model="gemini-2.5-flash",
             contents=full_prompt,
             config=config
         )
-
         return response.text
 
     def chain_of_thought(self, problem, steps, context=""):
         """
-        Implement chain of thought reasoning
+        Implements chain-of-thought reasoning.
+        Guides the model to solve a problem step-by-step.
         """
         role = "You are a logical problem-solver who thinks step-by-step."
 
+        # Construct the task with enumerated steps
         task = f"""
         Solve this problem by thinking through each step clearly:
 
@@ -349,69 +246,14 @@ class AdvancedPromptManager:
 
         Show your reasoning for each step before providing the final answer.
         """
-
         return self.expert_prompt(role, task, context)
 
-    def multi_perspective(self, situation, perspectives, decision_criteria):
-        """
-        Analyze from multiple viewpoints
-        """
-        role = "You are a strategic advisor skilled at analyzing complex situations from multiple angles."
-
-        task = f"""
-        Analyze this situation from different perspectives:
-
-        Situation: {situation}
-
-        Perspectives to consider:
-        {chr(10).join([f"- {p}" for p in perspectives])}
-
-        Decision criteria: {decision_criteria}
-        """
-
-        format_instructions = """
-        For each perspective:
-        1. Key concerns
-        2. Recommended approach
-        3. Potential risks
-
-        Then provide a synthesis with your recommended decision.
-        """
-
-        return self.expert_prompt(role, task, "", format_instructions)
-```
-
-#### Usage Examples
-
-```python
+# Example usage
 if __name__ == "__main__":
     pm = AdvancedPromptManager()
 ```
 
-### Example 1: Content Creation with Expert Role
-
-```python
-role = "You are a senior content marketing strategist with 10 years of experience in B2B SaaS marketing."
-task = "Create a content calendar for a productivity app targeting remote teams."
-context = "The app helps distributed teams coordinate async work. Target audience: remote team leaders at companies with 20-100 employees."
-format_instructions = """
-Provide:
-
-- 12 content ideas (one per month)
-- Content type for each (blog, video, infographic, etc.)
-- Key message and target keyword
-- Distribution channel recommendations
-
-Format as a table.
-"""
-
-result1 = pm.expert_prompt(role, task, context, format_instructions)
-print("Content Strategy Result:")
-print(result1)
-print("\n" + "="*50 + "\n")
-```
-
-### Example 2: Chain of Thought Problem Solving
+### Example: Chain of Thought Problem Solving
 
 ```python
 problem = "Our mobile app has a 60% user churn rate in the first week. How do we fix this?"
@@ -430,160 +272,29 @@ print(result2)
 print("\n" + "="*50 + "\n")
 ```
 
-### Example 3: Multi-perspective Analysis
-
-```python
-situation = "Should we expand to the European market this year or focus on growing our US customer base?"
-perspectives = [
-    "CEO (overall strategy and growth)",
-    "CFO (financial implications and risk)",
-    "Head of Product (development resources)",
-    "Marketing Director (market penetration strategy)"
-]
-criteria = "ROI potential, resource requirements, risk level, timeline to profitability"
-
-result3 = pm.multi_perspective(situation, perspectives, criteria)
-print("Multi-perspective Analysis:")
-print(result3)
-```
-
-## Real-World Examples That Actually Work
-
-Let's see these templates in action with scenarios you'll face:
-
-### Scenario 1: Product Launch Strategy
-
-Using the expert template for strategic planning
-
-```python
-pm = AdvancedPromptManager()
-```
-
-```python
-role = (
-    "You are a product launch strategist who has successfully launched 15+ tech "
-    "products, including 3 that achieved $10M+ ARR in their first year."
-)
-
-task = (
-    "Design a launch strategy for a no-code website builder targeting small "
-    "business owners."
-)
-
-context = """
-Product: Drag-and-drop website builder with AI-powered content suggestions
-Target market: Small business owners (restaurants, consultants, local services) who need websites but lack technical skills
-Budget: $50,000 for launch campaign
-Timeline: 3 months to launch
-Competition: Squarespace, Wix, Webflow
-"""
-
-format_instructions = """
-Provide a comprehensive launch strategy including:
-
-Pre-launch (60 days):
-- Audience research approach
-- Content strategy for building awareness
-- Partnership opportunities
-
-Launch week:
-- Channel mix and budget allocation
-- Key messages for each audience segment
-- Success metrics and tracking
-
-Post-launch (30 days):
-- User onboarding optimization
-- Feedback collection strategy
-- Growth tactics for sustained momentum
-
-Format each section with specific action items and timelines.
-"""
-
-launch_strategy = pm.expert_prompt(role, task, context, format_instructions)
-print(launch_strategy)
-```
-
-### Scenario 2: Technical Architecture Decision
-
-Chain of thought for complex technical decisions
-
-```python
-problem = "Our API response times are increasing as we scale. Current average is 800ms, target is under 200ms."
-
-steps = [
-"Identify the main bottlenecks in our current API architecture",
-"Evaluate caching strategies (Redis, CDN, application-level)",
-"Consider database optimization options",
-"Assess if microservices architecture would help",
-"Calculate cost vs performance impact of each solution",
-"Create implementation roadmap with testing strategy"
-]
-
-context = """
-Current setup:
-
-Django REST API serving 10,000 requests/hour
-
-PostgreSQL database with 2M records
-
-Hosted on AWS with single application server
-
-Main endpoints: user data, product catalog, order processing
-
-80% of requests are read operations
-"""
-
-technical_solution = pm.chain_of_thought(problem, steps, context)
-print(technical_solution)
-```
-
-### Scenario 3: Marketing Campaign Analysis
-
-Multi-perspective analysis for campaign optimization
-
-```python
-situation = "Our last email campaign had a 2.1% click-through rate, below our 3.5% target. Should we A/B test subject lines, redesign the email template, or segment our audience differently?"
-
-perspectives = [
-"Email Marketing Specialist (focus on technical metrics and optimization)",
-"Customer Success Manager (focus on audience needs and preferences)",
-"Data Analyst (focus on behavioral patterns and statistical significance)",
-"Brand Manager (focus on message consistency and brand perception)"
-]
-
-criteria = "Likelihood of improvement, implementation complexity, time to see results, potential impact on brand"
-
-campaign_analysis = pm.multi_perspective(situation, perspectives, criteria)
-print(campaign_analysis)
-```
-
 ## Common Mistakes That Kill Your Prompts
 
 Even with great templates, these mistakes will sabotage your results:
 
-### 1. Role Confusion
+#### 1. Role Confusion
 
 - **Wrong:** "Act as a marketing expert and also a developer and also a designer..."
 - **Right:** Pick one expert role per prompt. Chain multiple prompts if you need different expertise.
 
-### 2. Context Overload
+#### 2. Context Overload
 
 - **Wrong:** Including every possible detail in one massive context section.
 - **Right:** Include only the context that directly impacts the task at hand.
 
-### 3. Vague Format Instructions
+#### 3. Vague Format Instructions
 
 - **Wrong:** "Make it look nice."
 - **Right:** "Format as a bulleted list with each point containing a bold action item followed by 1-2 sentence explanation."
 
-### 4. Forgetting Constraints
+#### 4. Forgetting Constraints
 
 - **Wrong:** Asking for solutions without mentioning budget, time, or resource limitations.
 - **Right:** Always include realistic constraints that mirror real-world conditions.
-
-## Testing and Iterating Your Prompts
-
-Here's how to systematically improve your prompts:
 
 ### The RICE Method for Prompt Optimization
 
@@ -591,175 +302,6 @@ Here's how to systematically improve your prompts:
 - **I**dentify patterns in the outputs (what's consistent vs. random)
 - **C**hange one element at a time (role, context, or format)
 - **E**valuate improvement using specific criteria
-
-### Prompt Testing Framework
-
-```python
-def test_prompt_variations(pm, base_prompt, variations, test_input):
-    """
-    Test different prompt variations to find the best performer
-    """
-    results = {}
-
-    for name, variation in variations.items():
-        print(f"Testing: {name}")
-
-        # Run prompt 3 times to check consistency
-        outputs = []
-        for i in range(3):
-            result = pm.expert_prompt(**variation, **test_input)
-            outputs.append(result)
-
-        results[name] = {
-            'outputs': outputs,
-            'consistency': len(set(outputs)),  # Lower number = more consistent
-            'avg_length': sum(len(out) for out in outputs) / 3
-        }
-
-    return results
-```
-
-Example usage
-
-```python
-variations = {
-    'basic_role': {
-        'role': 'You are a marketing expert.',
-        'task': 'Create a social media strategy.',
-        'format_instructions': 'Provide 5 tactics.'
-    },
-    'detailed_role': {
-        'role': 'You are a social media marketing manager with 7 years of experience growing B2B SaaS companies from 0 to $1M ARR.',
-        'task': 'Create a social media strategy for lead generation.',
-        'format_instructions': 'Provide 5 tactics with specific examples, expected results, and implementation timelines.'
-    }
-}
-
-test_input = {
-    'context': 'B2B project management software targeting remote teams'
-}
-
-# Run tests and compare results
-test_results = test_prompt_variations(pm, variations, test_input)
-```
-
-## Advanced Use Cases: When Templates Become Powerful
-
-### Dynamic Content Generation
-
-```python
-class ContentGenerator:
-    def __init__(self, pm):
-        self.pm = pm
-
-    def generate_series(self, topic, audience, content_types, count=5):
-        """
-        Generate a series of related content pieces
-        """
-        role = f"You are an expert content creator specializing in {topic} for {audience}."
-
-        results = {}
-        for content_type in content_types:
-            task = f"Create {count} {content_type} ideas about {topic}"
-            context = f"Target audience: {audience}"
-            format_instructions = f"""
-            For each {content_type}, provide:
-            - Compelling title
-            - Key points to cover (3-4 bullets)
-            - Hook for opening
-            - Call-to-action
-            """
-
-            results[content_type] = self.pm.expert_prompt(
-                role, task, context, format_instructions
-            )
-
-        return results
-
-# Example: Create content series for a productivity blog
-cg = ContentGenerator(pm)
-content_series = cg.generate_series(
-    topic="time management for entrepreneurs",
-    audience="startup founders and small business owners",
-    content_types=["blog posts", "YouTube videos", "social media posts"]
-)
-```
-
-### Interactive Prompt Chaining
-
-```python
-def interactive_business_analysis(pm, business_description):
-    """
-    Chain prompts to build comprehensive business analysis
-    """
-
-    # Step 1: Market Analysis
-    market_role = "You are a market research analyst with expertise in competitive intelligence."
-    market_task = f"Analyze the market opportunity for: {business_description}"
-    market_format = "Provide market size, key competitors, and growth trends."
-
-    market_analysis = pm.expert_prompt(market_role, market_task, "", market_format)
-
-    # Step 2: Use market analysis for business model recommendations
-    strategy_role = "You are a business strategist who helps companies find product-market fit."
-    strategy_task = "Based on this market analysis, recommend the best business model and go-to-market strategy"
-    strategy_context = f"Business: {business_description}\n\nMarket Analysis: {market_analysis}"
-    strategy_format = "Provide business model options, revenue streams, and 90-day action plan."
-
-    strategy_recommendation = pm.expert_prompt(
-        strategy_role, strategy_task, strategy_context, strategy_format
-    )
-
-    return {
-        'market_analysis': market_analysis,
-        'strategy_recommendation': strategy_recommendation
-    }
-
-# Example usage
-business = "AI-powered meal planning app for busy families"
-analysis = interactive_business_analysis(pm, business)
-```
-
-## Troubleshooting Your Advanced Prompts
-
-### When Templates Don't Work
-
-**Symptom:** Getting generic outputs despite detailed roles  
-**Solution:** Make roles more specific with concrete experience details
-
-**Symptom:** AI ignoring format instructions  
-**Solution:** Put format requirements in the task section, not just at the end
-
-**Symptom:** Inconsistent quality across multiple runs  
-**Solution:** Add constraints and examples to reduce randomness
-
-### Debugging Prompt Performance
-
-```python
-def debug_prompt(pm, role, task, context="", format_instructions=""):
-    """
-    Test prompt components individually to identify issues
-    """
-
-    # Test minimal version first
-    minimal = pm.expert_prompt("", task)
-
-    # Test with role only
-    with_role = pm.expert_prompt(role, task)
-
-    # Test with role and context
-    with_context = pm.expert_prompt(role, task, context)
-
-    # Test full prompt
-    full_prompt = pm.expert_prompt(role, task, context, format_instructions)
-
-    return {
-        'minimal': minimal,
-        'with_role': with_role,
-        'with_context': with_context,
-        'full_prompt': full_prompt
-    }
-```
 
 ## Next Steps: Building Your Prompt Engineering System
 
@@ -781,4 +323,4 @@ You now have the tools to create prompts that work consistently. Here's how to k
 
 - Track metrics like output consistency, time to good result, and how often you need to iterate.
 
-The next post in this series will dive into Thinking Like the Model - Few-Shot, Zero-Shot & Chain of Thought. In this you'll learn in-depth about how to think like a model, when to use these techniques, what is chain of thought and how it works, along with real world examples.
+You now have the structured templates and role-based techniques to craft prompts that work consistently. But here's where it gets really interesting: what if you could make AI think step-by-step like a human expert? In our next post, we'll explore how few-shot examples, zero-shot reasoning, and Chain of Thought prompting can unlock the AI's true problem-solving potential—turning simple prompts into powerful reasoning engines.
