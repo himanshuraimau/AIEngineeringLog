@@ -872,6 +872,52 @@
   font-size: 20px;
 }
 
+.progress-indicator img {
+  width: 100px !important;
+  height: 100px !important;
+  max-width: 100px !important;
+  max-height: 100px !important;
+  object-fit: contain !important;
+  display: block !important;
+  min-width: 100px !important;
+  min-height: 100px !important;
+  box-sizing: border-box !important;
+}
+
+/* Specific targeting for different image types */
+.progress-indicator img[src*="virtual-assistant.gif"] {
+  width: 50px !important;
+  height: 50px !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  min-width: 50px !important;
+  min-height: 50px !important;
+}
+
+.progress-indicator img[src*="teleprompter.gif"] {
+  width: 50px !important;
+  height: 50px !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  min-width: 50px !important;
+  min-height: 50px !important;
+}
+
+.progress-indicator img[src*="keyboard-ezgif.com-gif-maker.gif"] {
+  width: 50px !important;
+  height: 50px !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  min-width: 50px !important;
+  min-height: 50px !important;
+}
+
+/* Debug styles - add a border to see if CSS is being applied */
+.progress-indicator img {
+  border: none !important;
+  background-color: none !important;
+}
+
 .collection-navigation {
   margin: var(--section-spacing) 0;
   margin-left: var(--margin-left);
@@ -2067,5 +2113,15 @@
   .footer-content {
     flex-direction: column;
     text-align: center;
+  }
+
+  /* Mobile-specific image sizing for progress indicators */
+  .progress-indicator img {
+    width: 400px !important;
+    height: 400px !important;
+    max-width: 400px !important;
+    max-height: 400px !important;
+    min-width: 400px !important;
+    min-height: 400px !important;
   }
 } 
