@@ -199,13 +199,42 @@ const pageDescription = collectionMeta.description;
 
                 <div class="post-progress">
                   <div class="progress-indicator">
-                    {index === 0
-                      ? "🚀"
-                      : index < 3
-                        ? "📚"
-                        : index < 6
-                          ? "🛠️"
-                          : "🚀"}
+                    {index === 0 ? (
+                      <img
+                        src="/assets/teleprompter.gif"
+                        alt="Start"
+                        width="600"
+                        height="600"
+                      />
+                    ) : index === 1 ? (
+                      <img
+                        src="/assets/virtual-assistant.gif"
+                        alt="Learning"
+                        width="500"
+                        height="500"
+                      />
+                    ) : index === 2 ? (
+                      <img
+                        src="/assets/keyboard-ezgif.com-gif-maker.gif"
+                        alt="Learning"
+                        width="500"
+                        height="500"
+                      />
+                    ) : index < 6 ? (
+                      <img
+                        src="/assets/teleprompter.gif"
+                        alt="Building"
+                        width="500"
+                        height="500"
+                      />
+                    ) : (
+                      <img
+                        src="/assets/virtual-assistant.gif"
+                        alt="Advanced"
+                        width="600"
+                        height="600"
+                      />
+                    )}
                   </div>
                 </div>
               </article>
